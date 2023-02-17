@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import { initReactI18next } from 'react-i18next'
 import i18n from 'i18next'
+import acceptLanguageParser from 'accept-language-parser'
 
 import App from './components/application'
 import BasePropertyComponent, { CleanPropertyComponent } from './components/property-type'
@@ -14,6 +15,7 @@ import * as Hooks from './hooks'
 import ApiClient from './utils/api-client'
 import withNotice from './hoc/with-notice'
 import { flat } from '../utils/flat'
+import { combineTranslations, locales } from '../locale'
 
 const env = {
   NODE_ENV: process.env.NODE_ENV || 'development',
@@ -21,15 +23,29 @@ const env = {
 
 const store = createStore(window.REDUX_STATE)
 const theme = window.THEME
-const { locale } = window.REDUX_STATE
+
+// Pick best language based on available and what the user`s browser wants
+const language = acceptLanguageParser.pick(
+  window.AVAILABLE_LANGUAGES.map(({ locale }) => locale),
+  window.navigator.languages.join(','),
+  { loose: true },
+)
+const defaultTranslations = locales[language]?.translations || locales.en.translations
+const customTranslations = window.LOCALES?.[language]?.translations
+
+const locale = {
+  name: locales[language]?.name || locales.en.name,
+  language,
+  translations: combineTranslations(defaultTranslations, customTranslations),
+}
 
 i18n.use(initReactI18next).init({
+  lng: locale.language,
   resources: {
     [locale.language]: {
       translation: locale.translations,
     },
   },
-  lng: locale.language,
   interpolation: { escapeValue: false },
 })
 

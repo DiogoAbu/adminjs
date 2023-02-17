@@ -31,6 +31,7 @@ const translations = {
     appVersion: 'App: {{version}}',
     loginWelcome: 'Benvenuto',
     dashboard: 'Dashboard',
+    changeLanguage: 'Cambia Lingua',
   },
   properties: {
     length: 'Lunghezza',
@@ -88,6 +89,7 @@ const translations = {
 }
 
 export default {
+  name: 'Italiane',
   language: 'it',
   translations,
 }

@@ -44,6 +44,8 @@ const html = async (
         window.REDUX_STATE = ${JSON.stringify(reduxState)};
         window.THEME = ${JSON.stringify(theme)};
         window.AdminJS = { Components: {} };
+        window.LOCALES = ${JSON.stringify(admin.options.locales)};
+        window.AVAILABLE_LANGUAGES = ${JSON.stringify(admin.availableLanguages)};
       </script>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">

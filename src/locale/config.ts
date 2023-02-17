@@ -8,10 +8,16 @@ import { formatName } from '../utils/translate-functions.factory'
  * @alias Locale
  */
 export type Locale = {
-  /** Language ISO string like: 'en' 'pl' or 'de' */
+  /**
+   * Language name on local idiom
+   */
+  name: string;
+  /**
+   * Language ISO string like: 'en' 'pl' or 'de'
+   */
   language: string;
   /**
-   * All the translations.
+   * All the translations
    */
   translations: Partial<LocaleTranslations>;
 }

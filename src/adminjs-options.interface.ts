@@ -6,7 +6,7 @@ import BaseResource from './backend/adapters/resource/base-resource'
 import BaseDatabase from './backend/adapters/database/base-database'
 import { PageContext } from './backend/actions/action.interface'
 import { ResourceOptions } from './backend/decorators/resource/resource-options.interface'
-import { Locale } from './locale/config'
+import { LocaleTranslations } from './locale/config'
 import { CurrentAdmin } from './current-admin.interface'
 import { CoreScripts } from './core-scripts.interface'
 import { ComponentLoader } from './backend/utils/component-loader'
@@ -197,9 +197,8 @@ export interface AdminJSOptions {
    * ```javascript
    * {
    *   ...
-   *   locale: {
-   *     language: 'pl',
-   *     translations: {
+   *   locales: {
+   *     pl: {
    *       labels: {
    *         Comments: 'Komentarze',
    *       }
@@ -215,32 +214,16 @@ export interface AdminJSOptions {
    *   }
    * }
    * ```
-   *
-   * As I mentioned you can use this technic to change any text even in english.
-   * So to change button label for a "new action" from default "Create new" to "Create new Comment"
-   * only for Comment resource you can do:
-   *
-   * ```javascript
-   * {
-   *   ...
-   *   locale: {
-   *     translations: {
-   *       resources: {
-   *         Comments: {
-   *           actions: {
-   *             new: 'Create new Comment',
-   *           }
-   *         }
-   *       }
-   *     }
-   *   }
-   * }
-   * ```
-   *
-   * Check out the [i18n tutorial]{@tutorial i18n} to see how
-   * internationalization in AdminJS works.
    */
-  locale?: Locale;
+  locales?: Record<string, {
+    name?: string;
+    translations: Partial<LocaleTranslations>;
+  }>
+
+  /**
+   * Language to load when one is not set
+   */
+  initialLanguage?: string;
 
   /**
    * rollup bundle options;

@@ -31,6 +31,7 @@ const translations = {
     appVersion: 'App: {{version}}',
     loginWelcome: 'Bem-vindo',
     dashboard: 'Dashboard',
+    changeLanguage: 'Mudar Idioma',
   },
   properties: {
     length: 'Tamanho',
@@ -88,6 +89,7 @@ const translations = {
 }
 
 export default {
+  name: 'Português (Brasil)',
   language: 'pt-BR',
   translations,
 }

@@ -31,6 +31,7 @@ const translations = {
     appVersion: 'App: {{version}}',
     loginWelcome: 'Wilkommen',
     dashboard: 'Dashboard',
+    changeLanguage: 'Sprache Ändern',
   },
   properties: {
     length: 'Anzahl',
@@ -88,6 +89,7 @@ const translations = {
 }
 
 export default {
+  name: 'Deutsch',
   language: 'de',
   translations,
 }

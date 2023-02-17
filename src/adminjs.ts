@@ -72,6 +72,8 @@ class AdminJS {
 
   public locale!: Locale
 
+  public availableLanguages!: { locale: string; name: string; }[]
+
   public i18n!: I18n
 
   public translateFunctions!: TranslateFunctions
@@ -127,15 +129,40 @@ class AdminJS {
     this.resources = resourcesFactory.buildResources({ databases, resources })
   }
 
-  initI18n(): void {
-    const language = this.options.locale?.language || locales.en.language
-    const defaultTranslations = locales[language]?.translations || locales.en.translations
-    this.locale = {
-      translations: combineTranslations(defaultTranslations, this.options.locale?.translations),
-      language,
+  initI18n(overrideLanguage?: string): void {
+    const language = overrideLanguage || this.options.initialLanguage || locales.en.language
+
+    // Locales that come with AdminJS
+    this.availableLanguages = [
+      { locale: locales.de.language, name: locales.de.name },
+      { locale: locales.en.language, name: locales.en.name },
+      { locale: locales.it.language, name: locales.it.name },
+      { locale: locales['pt-BR'].language, name: locales['pt-BR'].name },
+      { locale: locales.ua.language, name: locales.ua.name },
+      { locale: locales['zh-CN'].language, name: locales['zh-CN'].name },
+    ]
+    // Locales the user provided
+    if (this.options.locales) {
+      // Add passed locales to available languages, if it does not already exists
+      Object.entries(this.options.locales).forEach(([locale, value]) => {
+        if (!this.availableLanguages.find((e) => e.locale === locale)) {
+          this.availableLanguages.push({ locale, name: value.name! })
+        }
+      })
     }
+    this.availableLanguages.sort((a, b) => a.name.localeCompare(b.name))
+
+    const defaultTranslations = locales[language]?.translations || locales.en.translations
+    const customTranslations = this.options.locales?.[language]?.translations
+    this.locale = {
+      name: locales[language].name,
+      language,
+      translations: combineTranslations(defaultTranslations, customTranslations),
+    }
+
     if (i18n.isInitialized) {
       i18n.addResourceBundle(this.locale.language, 'translation', this.locale.translations)
+      i18n.changeLanguage(this.locale.language)
     } else {
       i18n.init({
         lng: this.locale.language,
@@ -193,7 +220,7 @@ class AdminJS {
    */
   async initialize(): Promise<void> {
     if (process.env.NODE_ENV === 'production'
-        && !(process.env.ADMIN_JS_SKIP_BUNDLE === 'true')) {
+      && !(process.env.ADMIN_JS_SKIP_BUNDLE === 'true')) {
       // eslint-disable-next-line no-console
       console.log('AdminJS: bundling user components...')
       await userComponentsBundler(this, { write: true })
@@ -361,7 +388,7 @@ AdminJS.VERSION = VERSION
 AdminJS.ACTIONS = ACTIONS
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface AdminJS extends TranslateFunctions {}
+interface AdminJS extends TranslateFunctions { }
 
 export const { registerAdapter } = AdminJS
 

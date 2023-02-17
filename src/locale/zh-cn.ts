@@ -31,6 +31,7 @@ const translations = {
     appVersion: 'App: {{version}}',
     loginWelcome: '欢迎',
     dashboard: '仪表板',
+    changeLanguage: '改变语言',
   },
   properties: {
     length: '长度',
@@ -88,6 +89,7 @@ const translations = {
 }
 
 export default {
+  name: '简体中文',
   language: 'zh-CN',
   translations,
 }

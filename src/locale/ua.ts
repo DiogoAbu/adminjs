@@ -32,6 +32,7 @@ const translations = {
     appVersion: 'Версія додатку: {{version}}',
     loginWelcome: 'Ласкаво просимо',
     dashboard: 'Панель приладів',
+    changeLanguage: 'Змінити мову',
   },
   properties: {
     length: 'Довжина',
@@ -91,6 +92,7 @@ const translations = {
 }
 
 export default {
+  name: 'Українська',
   language: 'ua',
   translations,
 }
