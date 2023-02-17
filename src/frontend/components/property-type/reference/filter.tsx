@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { FormGroup, Label, SelectAsync } from '@adminjs/design-system'
+import acceptLanguageParser from 'accept-language-parser'
 
 import ApiClient from '../../../utils/api-client'
 import { FilterPropertyProps, SelectRecord } from '../base-property-props'
@@ -11,22 +12,53 @@ const Filter: React.FC<FilterPropertyProps> = (props) => {
   const { property, filter, onChange } = props
   const [options, setOptions] = useState<SelectOptions>([])
 
-  const api = new ApiClient()
-
   const handleChange = (selected: SelectRecord) => {
     onChange(property.path, selected ? selected.value : '')
   }
 
   const loadOptions = async (inputValue: string): Promise<SelectOptions> => {
+    const api = new ApiClient()
     const records = await api.searchRecords({
       resourceId: property.reference as string,
       query: inputValue,
     })
 
-    const loadedOptions = records.map((r) => ({ value: r.id, label: r.title }))
-    setOptions(loadedOptions)
+    const loadedOptions = records.map(async (optionRecord) => {
+      let label = optionRecord.title
 
-    return loadedOptions
+      try {
+        if (property.custom.propertyOnLocalizedEntity) {
+          const data = await api
+            .searchRecords({
+              resourceId: 'Localized',
+              searchProperty: property.custom.propertyOnLocalizedEntity,
+              query: optionRecord.id,
+            })
+
+          const locale = acceptLanguageParser.pick(
+            data.map((e) => e.params.locale),
+            window.navigator.languages.join(','),
+            { loose: true },
+          )
+
+          const found = data.find(((e) => e.params.locale === locale))?.params?.value
+          if (found) {
+            label = found
+          }
+        }
+      } catch (err) {
+        console.error('Reference value on filter could not get localized value', err)
+      }
+
+      return {
+        value: optionRecord.id,
+        label,
+      }
+    })
+    const localizedOptions = await Promise.all(loadedOptions)
+    setOptions(localizedOptions)
+
+    return localizedOptions
   }
 
   const value = typeof filter[property.path] === 'undefined' ? '' : filter[property.path]

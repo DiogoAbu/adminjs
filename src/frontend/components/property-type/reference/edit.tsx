@@ -1,5 +1,6 @@
 import React, { FC, useState, useEffect, useMemo, memo } from 'react'
 import { FormGroup, FormMessage, SelectAsync } from '@adminjs/design-system'
+import acceptLanguageParser from 'accept-language-parser'
 
 import ApiClient from '../../../utils/api-client'
 import { EditPropertyProps, SelectRecord } from '../base-property-props'
@@ -37,11 +38,42 @@ const Edit: FC<CombinedProps> = (props) => {
       resourceId,
       query: inputValue,
     })
-    return optionRecords.map((optionRecord: RecordJSON) => ({
-      value: optionRecord.id,
-      label: optionRecord.title,
-      record: optionRecord,
-    }))
+
+    const optionRecordsLocalized = optionRecords.map(async (optionRecord) => {
+      let label = optionRecord.title
+
+      try {
+        if (property.custom.propertyOnLocalizedEntity) {
+          const data = await api
+            .searchRecords({
+              resourceId: 'Localized',
+              searchProperty: property.custom.propertyOnLocalizedEntity,
+              query: optionRecord.id,
+            })
+
+          const locale = acceptLanguageParser.pick(
+            data.map((e) => e.params.locale),
+            window.navigator.languages.join(','),
+            { loose: true },
+          )
+
+          const found = data.find(((e) => e.params.locale === locale))?.params?.value
+          if (found) {
+            label = found
+          }
+        }
+      } catch (err) {
+        console.error('Reference value on edit action could not get localized value', err)
+      }
+
+      return {
+        value: optionRecord.id,
+        label,
+        record: optionRecord,
+      }
+    })
+
+    return Promise.all(optionRecordsLocalized)
   }
   const error = record?.errors[property.path]
 
