@@ -1,0 +1,30 @@
+{
+  "git": {
+    "requireCleanWorkingDir": false,
+    "requireBranch": "custom",
+    "requireUpstream": false,
+    "requireCommits": false,
+    "addUntrackedFiles": false,
+    "commit": false,
+    "tag": false,
+    "push": false
+  },
+  "npm": {
+    "publish": true,
+    "versionArgs": ["--allow-same-version"]
+  },
+  "hooks": {
+    "before:init": [
+      "npx yarn-lock-fix",
+      "yarn clean",
+      "yarn lint",
+      "yarn cross-env-shell NODE_ENV=production yarn bundle:globals",
+      "yarn cross-env-shell NODE_ENV=dev yarn bundle:globals",
+      "yarn cross-env-shell NODE_ENV=production ONCE=true yarn bundle",
+      "yarn cross-env-shell ONCE=true yarn bundle",
+      "yarn build",
+      "yarn types",
+      "rm -rf ./bundle && cp -r ./src/frontend/assets/scripts ./bundle"
+    ]
+  }
+}

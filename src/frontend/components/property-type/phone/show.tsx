@@ -2,14 +2,14 @@ import React, { FC } from 'react'
 import { ValueGroup } from '@adminjs/design-system'
 
 import { ShowPropertyProps } from '../base-property-props'
-import DefaultPropertyValue from '../default-type/default-property-value'
 import allowOverride from '../../../hoc/allow-override'
+import PhonePropertyValue from './phone-property-value'
 
 const Show: FC<ShowPropertyProps> = (props) => {
   const { property } = props
   return (
     <ValueGroup label={property.label}>
-      <DefaultPropertyValue {...props} />
+      <PhonePropertyValue {...props} />
     </ValueGroup>
   )
 }

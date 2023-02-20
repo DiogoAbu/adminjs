@@ -65,6 +65,7 @@ export type OverridableComponent =
   | 'DefaultPhoneFilterProperty'
   | 'DefaultPhoneListProperty'
   | 'DefaultPhoneShowProperty'
+  | 'PhonePropertyValue'
   | 'DefaultReferenceEditProperty'
   | 'DefaultReferenceShowProperty'
   | 'DefaultReferenceListProperty'
