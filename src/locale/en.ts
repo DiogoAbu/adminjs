@@ -1,4 +1,10 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* spellchecker: disable */
+import { registerLocale } from 'react-datepicker'
+
+import enUS from 'date-fns/locale/en-US'
+
+registerLocale('en-US', enUS)
 
 const translations = {
   actions: {
@@ -32,6 +38,11 @@ const translations = {
     loginWelcome: 'Welcome',
     dashboard: 'Dashboard',
     changeLanguage: 'Change Language',
+    time: 'Time',
+    previousMonth: 'Previous Month',
+    nextMonth: 'Next Month',
+    previousYear: 'Previous Year',
+    nextYear: 'Next Year',
   },
   properties: {
     length: 'Length',
@@ -97,4 +108,48 @@ export default {
   name: 'English',
   language: 'en',
   translations,
+  format: {
+    datetime: {
+      dateFormat: 'yyyy/MM/dd HH:mm',
+      placeholderText: 'YYYY/MM/DD HH:MM',
+      inputMask: {
+        mask: [
+          { regex: '\\d' },
+          { regex: '\\d' },
+          { regex: '\\d' },
+          { regex: '\\d' },
+          '/',
+          { regex: '\\d' },
+          { regex: '\\d' },
+          '/',
+          { regex: '\\d' },
+          { regex: '\\d' },
+          ' ',
+          { regex: '\\d' },
+          { regex: '\\d' },
+          ':',
+          { regex: '\\d' },
+          { regex: '\\d' },
+        ],
+      },
+    },
+    date: {
+      dateFormat: 'yyyy/MM/dd',
+      placeholderText: 'YYYY/MM/DD',
+      inputMask: {
+        mask: [
+          { regex: '\\d' },
+          { regex: '\\d' },
+          { regex: '\\d' },
+          { regex: '\\d' },
+          '/',
+          { regex: '\\d' },
+          { regex: '\\d' },
+          '/',
+          { regex: '\\d' },
+          { regex: '\\d' },
+        ],
+      },
+    },
+  },
 }

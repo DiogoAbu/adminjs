@@ -155,8 +155,7 @@ class AdminJS {
     const defaultTranslations = locales[language]?.translations || locales.en.translations
     const customTranslations = this.options.locales?.[language]?.translations
     this.locale = {
-      name: locales[language].name,
-      language,
+      ...locales[language],
       translations: combineTranslations(defaultTranslations, customTranslations),
     }
 

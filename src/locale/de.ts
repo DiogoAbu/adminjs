@@ -1,4 +1,10 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* spellchecker: disable */
+import { registerLocale } from 'react-datepicker'
+
+import de from 'date-fns/locale/de'
+
+registerLocale('de', de)
 
 const translations = {
   actions: {

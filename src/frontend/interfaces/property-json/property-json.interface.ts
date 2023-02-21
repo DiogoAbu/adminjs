@@ -153,6 +153,12 @@ export interface PropertyJSON {
   isVirtual: boolean;
 }
 
+export interface DateTimePropertyCustom {
+  intlOptions?: (
+    (propertyType: PropertyType) => Intl.DateTimeFormatOptions
+  ) | Intl.DateTimeFormatOptions;
+}
+
 export type BasePropertyJSON = Omit<PropertyJSON, 'path'>
 
 /**

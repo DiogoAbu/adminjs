@@ -1,5 +1,12 @@
+import { DatePickerProps } from '@adminjs/design-system'
 import merge from 'lodash/merge'
 import { formatName } from '../utils/translate-functions.factory'
+
+type DateFormatOptions = {
+  dateFormat: string,
+  placeholderText: string,
+  inputMask: DatePickerProps['inputMask'],
+}
 
 /**
  * Locale object passed to {@link AdminJSOptions} and stored in the application
@@ -20,6 +27,11 @@ export type Locale = {
    * All the translations
    */
   translations: Partial<LocaleTranslations>;
+
+  format: {
+    datetime: DateFormatOptions,
+    date: DateFormatOptions,
+  },
 }
 
 export type LocaleTranslationsBlock = {

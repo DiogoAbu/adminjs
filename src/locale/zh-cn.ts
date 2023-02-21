@@ -1,4 +1,10 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* spellchecker: disable */
+import { registerLocale } from 'react-datepicker'
+
+import zhCN from 'date-fns/locale/zh-CN'
+
+registerLocale('zh-CN', zhCN)
 
 const translations = {
   actions: {

@@ -1,4 +1,10 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* spellchecker: disable */
+import { registerLocale } from 'react-datepicker'
+
+import ptBR from 'date-fns/locale/pt-BR'
+
+registerLocale('pt-BR', ptBR)
 
 const translations = {
   actions: {
@@ -32,6 +38,11 @@ const translations = {
     loginWelcome: 'Bem-vindo',
     dashboard: 'Dashboard',
     changeLanguage: 'Mudar Idioma',
+    time: 'Horário',
+    previousMonth: 'Mês Anterior',
+    nextMonth: 'Próximo Mês',
+    previousYear: 'Ano Anterior',
+    nextYear: 'Próximo Ano',
   },
   properties: {
     length: 'Tamanho',
@@ -92,4 +103,48 @@ export default {
   name: 'Português (Brasil)',
   language: 'pt-BR',
   translations,
+  format: {
+    datetime: {
+      dateFormat: 'dd/MM/yyyy HH:mm',
+      placeholderText: 'DD/MM/YYYY HH:MM',
+      inputMask: {
+        mask: [
+          { regex: '\\d' },
+          { regex: '\\d' },
+          '/',
+          { regex: '\\d' },
+          { regex: '\\d' },
+          '/',
+          { regex: '\\d' },
+          { regex: '\\d' },
+          { regex: '\\d' },
+          { regex: '\\d' },
+          ' ',
+          { regex: '\\d' },
+          { regex: '\\d' },
+          ':',
+          { regex: '\\d' },
+          { regex: '\\d' },
+        ],
+      },
+    },
+    date: {
+      dateFormat: 'dd/MM/yyyy',
+      placeholderText: 'DD/MM/YYYY',
+      inputMask: {
+        mask: [
+          { regex: '\\d' },
+          { regex: '\\d' },
+          '/',
+          { regex: '\\d' },
+          { regex: '\\d' },
+          '/',
+          { regex: '\\d' },
+          { regex: '\\d' },
+          { regex: '\\d' },
+          { regex: '\\d' },
+        ],
+      },
+    },
+  },
 }

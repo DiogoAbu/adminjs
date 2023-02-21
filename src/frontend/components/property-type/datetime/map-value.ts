@@ -1,13 +1,26 @@
-import { formatDateProperty } from '@adminjs/design-system'
+import { merge } from 'lodash'
 import { PropertyType } from '../../../../backend/adapters/property/base-property'
 
-export default (value: Date, propertyType: PropertyType): string => {
+const defaultOptions: Intl.DateTimeFormatOptions = {
+  dateStyle: 'short',
+  timeStyle: 'medium',
+}
+
+export default (
+  value: Date,
+  type: PropertyType,
+  intlOptions?: (
+    (propertyType: PropertyType) => Intl.DateTimeFormatOptions
+  ) | Intl.DateTimeFormatOptions,
+): string => {
   if (!value) {
     return ''
   }
   const date = new Date(value)
   if (date) {
-    return formatDateProperty(date, propertyType)
+    const options = merge({}, defaultOptions, typeof intlOptions === 'function' ? intlOptions(type) : intlOptions)
+    const formatter = new Intl.DateTimeFormat(undefined, options)
+    return formatter.format(date)
   }
   return ''
 }
