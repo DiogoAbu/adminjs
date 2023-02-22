@@ -2,10 +2,13 @@ import React from 'react'
 import { FormGroup, Label, Input, Select } from '@adminjs/design-system'
 
 import allowOverride from '../../../hoc/allow-override'
+import { useTranslation } from '../../../hooks'
 import { FilterPropertyProps } from '../base-property-props'
 
 const Filter: React.FC<FilterPropertyProps> = (props) => {
-  const { property, onChange, filter } = props
+  const { property, onChange, filter, resource } = props
+
+  const { translateLabel } = useTranslation()
 
   const handleInputChange = (event) => {
     onChange(property.path, event.target.value)
@@ -21,12 +24,16 @@ const Filter: React.FC<FilterPropertyProps> = (props) => {
     const value = filter[property.path] || ''
     if (property.availableValues) {
       const selected = property.availableValues.find((av) => av.value === value)
+      const options = property.availableValues.map((e) => ({
+        ...e,
+        label: translateLabel(e.label, resource.id),
+      }))
       return (
         <Select
           variant="filter"
           value={typeof selected === 'undefined' ? '' : selected}
           isClearable
-          options={property.availableValues}
+          options={options}
           onChange={handleSelectChange}
         />
       )

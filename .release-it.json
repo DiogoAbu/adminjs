@@ -6,6 +6,7 @@
     "requireCommits": false,
     "addUntrackedFiles": false,
     "commit": true,
+    "commitMessage": "chore(release): ${version} [skip ci]",
     "tag": false,
     "push": false
   },

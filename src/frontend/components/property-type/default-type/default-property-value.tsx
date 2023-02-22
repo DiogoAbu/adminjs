@@ -2,10 +2,13 @@ import React from 'react'
 import { Badge } from '@adminjs/design-system'
 
 import allowOverride from '../../../hoc/allow-override'
+import { useTranslation } from '../../../hooks'
 import { ShowPropertyProps } from '../base-property-props'
 
 const DefaultPropertyValue: React.FC<ShowPropertyProps> = (props) => {
-  const { property, record } = props
+  const { property, record, resource } = props
+
+  const { translateLabel } = useTranslation()
 
   const rawValue = record?.params[property.path]
 
@@ -21,7 +24,7 @@ const DefaultPropertyValue: React.FC<ShowPropertyProps> = (props) => {
     }
 
     return (
-      <Badge>{option?.label || rawValue}</Badge>
+      <Badge>{option?.label ? translateLabel(option.label, resource.id) : rawValue}</Badge>
     )
   }
 
