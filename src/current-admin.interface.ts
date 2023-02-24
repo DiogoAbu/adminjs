@@ -10,7 +10,7 @@
  * @alias CurrentAdmin
  * @memberof AdminJS
  */
-export type CurrentAdmin = {
+export interface CurrentAdmin {
   /**
    * Admin has one required field which is an email
    */
