@@ -44,6 +44,7 @@ const Edit: React.FC<EditPropertyProps> = (props) => {
         previousYearButtonLabel={translateLabel('previousYear')}
         nextYearAriaLabel={translateLabel('nextYear')}
         nextYearButtonLabel={translateLabel('nextYear')}
+        required={property.isRequired}
         {...property.props}
       />
       <FormMessage>{error && error.message}</FormMessage>

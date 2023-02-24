@@ -31,6 +31,7 @@ const Edit: FC<EditPropertyProps> = (props) => {
         onBlur={() => onChange(property.path, value)}
         value={value}
         disabled={property.isDisabled}
+        required={property.isRequired}
         {...property.props}
       />
       <FormMessage>{error && error.message}</FormMessage>

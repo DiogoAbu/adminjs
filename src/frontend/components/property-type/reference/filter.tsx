@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { FormGroup, Label, SelectAsync } from '@adminjs/design-system'
-import acceptLanguageParser from 'accept-language-parser'
 
 import ApiClient from '../../../utils/api-client'
 import { FilterPropertyProps, SelectRecord } from '../base-property-props'
 import allowOverride from '../../../hoc/allow-override'
 import { FilterSelectCustom } from '../../../interfaces'
+import { useTranslation } from '../../../hooks/use-translation'
 
 const api = new ApiClient()
 
@@ -14,6 +14,8 @@ type SelectOptions = Array<{value: string | number; label: string }>
 const Filter: React.FC<FilterPropertyProps> = (props) => {
   const { property, filter, onChange } = props
   const { filterFilters } = property.custom as FilterSelectCustom
+
+  const { i18n } = useTranslation()
 
   const [options, setOptions] = useState<SelectOptions>([])
   const [shouldRender, setShouldRender] = useState(false)
@@ -75,13 +77,7 @@ const Filter: React.FC<FilterPropertyProps> = (props) => {
               query: optionRecord.id,
             })
 
-          const locale = acceptLanguageParser.pick(
-            data.map((e) => e.params.locale),
-            window.navigator.languages.join(','),
-            { loose: true },
-          )
-
-          const found = data.find(((e) => e.params.locale === locale))?.params?.value
+          const found = data.find(((e) => e.params.locale === i18n.language))?.params?.value
           if (found) {
             label = found
           }

@@ -17,7 +17,7 @@ const Edit: FC<EditPropertyProps> = (props) => {
       <CurrencyInputWrapper
         id={property.path}
         initial={propValue}
-        options={property.props as CurrencyInputProps}
+        options={{ ...property.props, required: property.isRequired } as CurrencyInputProps}
         onChange={(value) => onChange(property.path, value)}
       />
       <FormMessage>{error && error.message}</FormMessage>

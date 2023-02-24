@@ -34,6 +34,7 @@ const Edit: React.FC<EditPropertyProps> = (props) => {
           onKeyDown={(e) => e.keyCode === 13 && onChange(property.path, value)}
           value={value ?? ''}
           disabled={property.isDisabled}
+          required={property.isRequired}
           {...property.props}
         />
         <Button

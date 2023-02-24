@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { Link, Icon } from '@adminjs/design-system'
-import acceptLanguageParser from 'accept-language-parser'
 
 import ViewHelpers from '../../../../backend/utils/view-helpers/view-helpers'
 import allowOverride from '../../../hoc/allow-override'
 import { ShowPropertyProps } from '../base-property-props'
 import { ApiClient } from '../../../../frontend/utils'
+import { useTranslation } from '../../../hooks/use-translation'
 
 type Props = Pick<ShowPropertyProps, 'property' | 'record'>
 
 const ReferenceValue: React.FC<Props> = (props) => {
   const { property, record } = props
+
+  const { i18n } = useTranslation()
 
   const [localizedValue, setLocalizedValue] = useState('')
 
@@ -27,12 +29,7 @@ const ReferenceValue: React.FC<Props> = (props) => {
         query: record.params[property.path],
       })
       .then((data) => {
-        const locale = acceptLanguageParser.pick(
-          data.map((e) => e.params.locale),
-          window.navigator.languages.join(','),
-          { loose: true },
-        )
-        setLocalizedValue(data.find(((e) => e.params.locale === locale))?.params?.value || '')
+        setLocalizedValue(data.find(((e) => e.params.locale === i18n.language))?.params?.value || '')
       })
       .catch((err) => {
         console.error('Reference value could not get localized value', err)
