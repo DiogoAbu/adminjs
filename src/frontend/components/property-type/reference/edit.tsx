@@ -3,7 +3,7 @@ import { FormGroup, FormMessage, SelectAsync } from '@adminjs/design-system'
 
 import ApiClient from '../../../utils/api-client'
 import { EditPropertyProps, SelectRecord } from '../base-property-props'
-import { FilterSelectCustom, RecordJSON } from '../../../interfaces'
+import { FilterSelectCustom, RecordJSON, ErrorMessage } from '../../../interfaces'
 import { PropertyLabel } from '../utils/property-label'
 import { flat } from '../../../../utils/flat'
 import { recordPropertyIsEqual } from '../record-property-is-equal'
@@ -67,6 +67,8 @@ const Edit: FC<CombinedProps> = (props) => {
   const selectRef = useRef<object>(null)
 
   const handleChange = (selected: SelectRecordEnhanced): void => {
+    setError(null)
+
     if (selected) {
       onChange(property.path, selected.value, selected.record)
     } else {
@@ -126,7 +128,10 @@ const Edit: FC<CombinedProps> = (props) => {
 
     return optionRecordsLocalized
   }
-  const error = record?.errors[property.path]
+  const [error, setError] = useState<ErrorMessage | null>(record?.errors[property.path] || null)
+  useEffect(() => {
+    setError(record?.errors[property.path] || null)
+  }, [record?.errors[property.path]])
 
   const [selectedOption, setSelectedOption] = useState<SelectRecord | undefined>()
   const [loadingRecord, setLoadingRecord] = useState(0)
@@ -161,7 +166,7 @@ const Edit: FC<CombinedProps> = (props) => {
           recordId: selectedId,
         })
 
-        setSelectedOption({ value: selectedId, label: data?.record?.title })
+        setSelectedOption({ value: selectedId, label: data.record.title })
       } finally {
         setLoadingRecord((c) => c - 1)
       }
