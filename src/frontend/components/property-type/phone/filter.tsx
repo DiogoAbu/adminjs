@@ -4,9 +4,12 @@ import React, { FC, useCallback } from 'react'
 import { FilterPropertyProps } from '../base-property-props'
 import { PropertyLabel } from '../utils/property-label'
 import allowOverride from '../../../hoc/allow-override'
+import { useTranslation } from '../../../hooks'
 
 const Filter: FC<FilterPropertyProps> = (props) => {
-  const { onChange, property, filter } = props
+  const { onChange, property, filter, resource } = props
+
+  const { translateLabel, translateMessage } = useTranslation()
 
   const handleChange = useCallback((value) => {
     onChange(property.path, value)
@@ -20,6 +23,8 @@ const Filter: FC<FilterPropertyProps> = (props) => {
         inputProps={{
           name: `filter-${property.path}`,
         }}
+        searchPlaceholder={translateLabel('search', resource.id)}
+        searchNotFound={translateMessage('noCountryFound', resource.id)}
         onChange={handleChange}
         value={filter[property.path]}
         {...property.props as PhoneInputProps}
