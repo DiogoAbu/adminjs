@@ -159,6 +159,16 @@ export interface DateTimePropertyCustom {
   ) | Intl.DateTimeFormatOptions;
 }
 
+export interface FilterTypes {
+  roleTypes?: string[]
+}
+
+export interface FilterSelectCustom {
+  newFilters: FilterTypes
+  editFilters: FilterTypes
+  filterFilters: FilterTypes
+}
+
 export type BasePropertyJSON = Omit<PropertyJSON, 'path'>
 
 /**
