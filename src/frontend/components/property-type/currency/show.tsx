@@ -7,11 +7,11 @@ import allowOverride from '../../../hoc/allow-override'
 
 const Show: FC<EditPropertyProps> = (props) => {
   const { property, record } = props
-  const value = `${record.params[property.path]}`
+  const value = formatValue(record.params[property.path], property.props)
 
   return (
     <ValueGroup label={property.label}>
-      {formatValue(value, property.props)}
+      {value}
     </ValueGroup>
   )
 }
