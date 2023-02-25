@@ -32,7 +32,7 @@ const Edit: FC<CombinedProps> = (props) => {
 
   const selectedId = useMemo(
     () => flat.get(record?.params, property.path) as string | undefined,
-    [record],
+    [record?.params, property.path],
   )
 
   const [shouldRender, setShouldRender] = useState(false)
@@ -65,6 +65,10 @@ const Edit: FC<CombinedProps> = (props) => {
 
   const [selectedOptionRef, setSelectedOptionRef] = useState({ value: selectedId })
   const selectRef = useRef<object>(null)
+
+  useEffect(() => {
+    setSelectedOptionRef({ value: selectedId })
+  }, [selectedId])
 
   const handleChange = (selected: SelectRecordEnhanced): void => {
     setError(null)
@@ -160,7 +164,7 @@ const Edit: FC<CombinedProps> = (props) => {
           return
         }
 
-        const data: any = await api.recordAction({
+        const { data } = await api.recordAction({
           actionName: 'show',
           resourceId,
           recordId: selectedId,
@@ -171,7 +175,7 @@ const Edit: FC<CombinedProps> = (props) => {
         setLoadingRecord((c) => c - 1)
       }
     })()
-  }, [selectedId, resourceId])
+  }, [selectedId, resourceId, custom.propertyOnLocalizedEntity, i18n.language])
 
   const onFocusRequiredInput = () => {
     if (selectRef.current && 'focus' in selectRef.current && typeof selectRef.current.focus === 'function') {
