@@ -8,6 +8,7 @@ import {
 import { useMemo } from 'react'
 import { ResourceJSON } from '../interfaces'
 import useLocalStorage from './use-local-storage/use-local-storage'
+import useTranslation from './use-translation'
 
 const isSelected = (href, location): boolean => {
   const regExp = new RegExp(`${href}($|/)`)
@@ -20,6 +21,7 @@ export function useNavigationResources(
   const [openElements, setOpenElements] = useLocalStorage<Record<string, boolean>>('sidebarElements', {})
   const navigate = useNavigate()
   const location = useLocation()
+  const { translateLabel } = useTranslation()
 
   const enrichResource = useMemo(() => (
     resource: ResourceJSON,
@@ -28,7 +30,7 @@ export function useNavigationResources(
     href: resource.href || undefined,
     icon,
     isSelected: isSelected(resource.href, location),
-    label: resource.name,
+    label: translateLabel(resource.name),
     id: resource.id,
     onClick: (event): void => {
       if (resource.href) {
@@ -36,7 +38,7 @@ export function useNavigationResources(
         navigate(resource.href)
       }
     },
-  }), [location, navigate])
+  }), [location, navigate, translateLabel])
 
   // grouping resources into parents
   const map = resources
@@ -53,7 +55,7 @@ export function useNavigationResources(
       } else {
         memo[key] = {
           elements: [enrichResource(resource)],
-          label: resource.navigation?.name,
+          label: translateLabel(resource.navigation?.name),
           icon: resource.navigation?.icon,
           onClick: (): void => setOpenElements({
             ...openElements,
