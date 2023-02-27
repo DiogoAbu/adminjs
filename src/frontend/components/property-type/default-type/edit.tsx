@@ -7,26 +7,42 @@ import { recordPropertyIsEqual } from '../record-property-is-equal'
 import { PropertyLabel } from '../utils/property-label'
 import allowOverride from '../../../hoc/allow-override'
 import { useTranslation } from '../../../hooks'
+import { ErrorMessage } from '../../../interfaces'
 
 type CombinedProps = EditPropertyProps
 
 const Edit: FC<CombinedProps> = (props) => {
   const { property, record } = props
-  const error = record.errors?.[property.path]
+
+  const [error, setError] = useState<ErrorMessage>()
+  useEffect(() => {
+    setError(record.errors?.[property.path])
+  }, [record.errors?.[property.path]])
 
   return (
-    <FormGroup error={Boolean(error)}>
+    <FormGroup error={!!error}>
       <PropertyLabel property={property} />
-      {property.availableValues ? <SelectEdit {...props} /> : <TextEdit {...props} />}
+      {property.availableValues ? (
+        <SelectEdit {...props} setError={setError} />
+      ) : (
+        <TextEdit {...props} setError={setError} />
+      )}
       <FormMessage>{error && error.message}</FormMessage>
     </FormGroup>
   )
 }
 
-const SelectEdit: FC<CombinedProps> = (props) => {
-  const { record, property, onChange, resource } = props
+const SelectEdit: FC<CombinedProps & {
+  setError: React.Dispatch<React.SetStateAction<ErrorMessage | undefined>>
+}> = (props) => {
+  const { record, property, onChange, resource, setError } = props
 
   const { translateLabel } = useTranslation()
+
+  const handleChange = (s) => {
+    setError(undefined)
+    onChange(property.path, s?.value ?? '')
+  }
 
   if (!property.availableValues) {
     return null
@@ -42,7 +58,7 @@ const SelectEdit: FC<CombinedProps> = (props) => {
     <Select
       value={selected}
       options={options}
-      onChange={(s) => onChange(property.path, s?.value ?? '')}
+      onChange={handleChange}
       isDisabled={property.isDisabled}
       // @ts-ignore
       required={property.isRequired}
@@ -51,10 +67,17 @@ const SelectEdit: FC<CombinedProps> = (props) => {
   )
 }
 
-const TextEdit: FC<CombinedProps> = (props) => {
-  const { property, record, onChange } = props
+const TextEdit: FC<CombinedProps & {
+  setError: React.Dispatch<React.SetStateAction<ErrorMessage | undefined>>
+}> = (props) => {
+  const { property, record, onChange, setError } = props
   const propValue = record.params?.[property.path] ?? ''
   const [value, setValue] = useState(propValue)
+
+  const handleChange = () => {
+    setError(undefined)
+    onChange(property.path, value)
+  }
 
   useEffect(() => {
     if (value !== propValue) {
@@ -68,9 +91,9 @@ const TextEdit: FC<CombinedProps> = (props) => {
       name={property.path}
       required={property.isRequired}
       onChange={(e) => setValue(e.target.value)}
-      onBlur={() => onChange(property.path, value)}
+      onBlur={handleChange}
       // handle clicking ENTER
-      onKeyDown={(e) => e.keyCode === 13 && onChange(property.path, value)}
+      onKeyDown={(e) => e.keyCode === 13 && handleChange()}
       value={value}
       disabled={property.isDisabled}
       {...property.props}

@@ -16,6 +16,7 @@ import * as boolean from './boolean'
 import * as currency from './currency'
 import * as datetime from './datetime'
 import * as defaultType from './default-type'
+import * as json from './json'
 import * as password from './password'
 import * as phone from './phone'
 import * as reference from './reference'
@@ -44,6 +45,7 @@ const types: Record<PropertyType, any> = {
   number: defaultType,
   float: defaultType,
   uuid: defaultType,
+  json,
   mixed: null,
   'key-value': null,
   currency,

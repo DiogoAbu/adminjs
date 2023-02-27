@@ -1,6 +1,7 @@
 import React, { FC, useState, useEffect, useMemo, useRef, memo } from 'react'
 import { FormGroup, FormMessage, SelectAsync } from '@adminjs/design-system'
 
+import { useSelector } from 'react-redux'
 import ApiClient from '../../../utils/api-client'
 import { EditPropertyProps, SelectRecord } from '../base-property-props'
 import { FilterSelectCustom, RecordJSON, ErrorMessage } from '../../../interfaces'
@@ -9,6 +10,7 @@ import { flat } from '../../../../utils/flat'
 import { recordPropertyIsEqual } from '../record-property-is-equal'
 import allowOverride from '../../../hoc/allow-override'
 import { useTranslation } from '../../../hooks/use-translation'
+import { ReduxState } from '../../../../frontend/store'
 
 type CombinedProps = EditPropertyProps
 type SelectRecordEnhanced = SelectRecord & {
@@ -20,11 +22,20 @@ const api = new ApiClient()
 const Edit: FC<CombinedProps> = (props) => {
   const { onChange, property, record } = props
   const { reference: resourceId, custom } = property
-  const { newFilters, editFilters } = custom as FilterSelectCustom
-
-  const { i18n } = useTranslation()
 
   const actionType = record?.id ? 'edit' : 'new'
+
+  const { newFilters, editFilters } = custom as FilterSelectCustom
+  const selfFilter = (actionType === 'new' && newFilters?.self) || (actionType === 'edit' && editFilters?.self)
+
+  const session = useSelector((state: ReduxState) => state.session)
+
+  const [error, setError] = useState<ErrorMessage >()
+  useEffect(() => {
+    setError(record.errors?.[property.path])
+  }, [record.errors?.[property.path]])
+
+  const { i18n } = useTranslation()
 
   if (!resourceId) {
     throw new Error(`Cannot reference resource in property '${property.path}'`)
@@ -64,14 +75,14 @@ const Edit: FC<CombinedProps> = (props) => {
   }, [])
 
   const [selectedOptionRef, setSelectedOptionRef] = useState({ value: selectedId })
-  const selectRef = useRef<object>(null)
+  const selectRef = useRef<HTMLSelectElement>(null)
 
   useEffect(() => {
     setSelectedOptionRef({ value: selectedId })
   }, [selectedId])
 
   const handleChange = (selected: SelectRecordEnhanced): void => {
-    setError(null)
+    setError(undefined)
 
     if (selected) {
       onChange(property.path, selected.value, selected.record)
@@ -82,10 +93,21 @@ const Edit: FC<CombinedProps> = (props) => {
   }
 
   const loadOptions = async (inputValue: string): Promise<SelectRecordEnhanced[]> => {
-    const optionRecords = await api.searchRecords({
-      resourceId,
-      query: inputValue,
-    })
+    let optionRecords: RecordJSON[] = []
+
+    if (selfFilter && session?.id) {
+      const { data } = await api.recordAction({
+        actionName: 'show',
+        resourceId,
+        recordId: session.id,
+      })
+      optionRecords = [data.record]
+    } else {
+      optionRecords = await api.searchRecords({
+        resourceId,
+        query: inputValue,
+      })
+    }
 
     const optionRecordsLocalized = optionRecords.reduce<Promise<SelectRecordEnhanced[]>>(async (
       accPromise,
@@ -132,10 +154,6 @@ const Edit: FC<CombinedProps> = (props) => {
 
     return optionRecordsLocalized
   }
-  const [error, setError] = useState<ErrorMessage | null>(record?.errors[property.path] || null)
-  useEffect(() => {
-    setError(record?.errors[property.path] || null)
-  }, [record?.errors[property.path]])
 
   const [selectedOption, setSelectedOption] = useState<SelectRecord | undefined>()
   const [loadingRecord, setLoadingRecord] = useState(0)
@@ -178,9 +196,7 @@ const Edit: FC<CombinedProps> = (props) => {
   }, [selectedId, resourceId, custom.propertyOnLocalizedEntity, i18n.language])
 
   const onFocusRequiredInput = () => {
-    if (selectRef.current && 'focus' in selectRef.current && typeof selectRef.current.focus === 'function') {
-      selectRef.current.focus()
-    }
+    selectRef.current?.focus()
   }
 
   const getValueRequiredInput = () => {
@@ -190,12 +206,29 @@ const Edit: FC<CombinedProps> = (props) => {
     return selectedOptionRef.value || ''
   }
 
+  useEffect(() => {
+    (async () => {
+      if (selfFilter && session?.id) {
+        const { data } = await api.recordAction({
+          actionName: 'show',
+          resourceId,
+          recordId: session.id,
+        })
+        handleChange({
+          value: data.record.id,
+          label: data.record.title,
+          record: data.record,
+        })
+      }
+    })()
+  }, [])
+
   if (!shouldRender) {
     return null
   }
 
   return (
-    <FormGroup error={Boolean(error)} style={{ position: 'relative' }}>
+    <FormGroup error={!!error} style={{ position: 'relative' }}>
       <PropertyLabel property={property} />
       <SelectAsync
         cacheOptions

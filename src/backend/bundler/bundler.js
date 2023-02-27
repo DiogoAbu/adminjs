@@ -12,6 +12,7 @@ async function build({
     input,
     plugins: plugins({ babelConfig, minify, commonJSConfig }),
     external,
+    inlineDynamicImports: true,
   }
 
   const outputOptions = {

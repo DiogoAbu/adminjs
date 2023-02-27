@@ -12,6 +12,7 @@
       "strictFunctionTypes": true,
       "strictBindCallApply": true,
       "noImplicitThis": true,
+      "module": "CommonJS",
       "moduleResolution": "node",
       "baseUrl": ".",
       "types": [

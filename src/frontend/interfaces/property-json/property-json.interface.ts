@@ -161,12 +161,13 @@ export interface DateTimePropertyCustom {
 
 export interface FilterTypes {
   roleTypes?: string[]
+  self?: boolean;
 }
 
 export interface FilterSelectCustom {
-  newFilters: FilterTypes
-  editFilters: FilterTypes
-  filterFilters: FilterTypes
+  newFilters?: FilterTypes
+  editFilters?: FilterTypes
+  filterFilters?: FilterTypes
 }
 
 export type BasePropertyJSON = Omit<PropertyJSON, 'path'>

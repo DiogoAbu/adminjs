@@ -1,18 +1,37 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Section, FormGroup, FormMessage } from '@adminjs/design-system'
 
 import { EditPropertyProps } from '../base-property-props'
 import { PropertyLabel } from '../utils/property-label'
 import { convertToSubProperty } from './convert-to-sub-property'
 import allowOverride from '../../../hoc/allow-override'
+import { ErrorMessage, RecordJSON } from '../../../interfaces'
 
 type Props = {
   ItemComponent: typeof React.Component;
 }
 
 const Edit: React.FC<Props & EditPropertyProps> = (props) => {
-  const { property, record, ItemComponent } = props
-  const error = record.errors && record.errors[property.path]
+  const { property, record, ItemComponent, onChange } = props
+
+  const [error, setError] = useState<ErrorMessage>()
+  useEffect(() => {
+    setError(record.errors?.[property.path])
+  }, [record.errors?.[property.path]])
+
+  const handleChange = (
+    propertyOrRecord: string | RecordJSON,
+    value?: any,
+    selectedRecord?: RecordJSON | undefined,
+  ) => {
+    setError(undefined)
+    return onChange(
+      propertyOrRecord,
+      value,
+      selectedRecord,
+    )
+  }
+
   return (
     <FormGroup error={!!error}>
       <PropertyLabel property={property} />
@@ -22,6 +41,7 @@ const Edit: React.FC<Props & EditPropertyProps> = (props) => {
           return (
             <ItemComponent
               {...props}
+              onChange={handleChange}
               key={subPropertyWithPath.path}
               property={subPropertyWithPath}
             />

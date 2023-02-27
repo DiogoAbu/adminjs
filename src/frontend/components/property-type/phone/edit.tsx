@@ -6,6 +6,7 @@ import { recordPropertyIsEqual } from '../record-property-is-equal'
 import { PropertyLabel } from '../utils/property-label'
 import allowOverride from '../../../hoc/allow-override'
 import { useTranslation } from '../../../hooks'
+import { ErrorMessage } from '../../../interfaces'
 
 const Edit: FC<EditPropertyProps> = (props) => {
   const { onChange, property, record, resource } = props
@@ -14,7 +15,16 @@ const Edit: FC<EditPropertyProps> = (props) => {
 
   const propValue = record.params?.[property.path] ?? ''
   const [value, setValue] = useState(propValue)
-  const error = record.errors?.[property.path]
+
+  const [error, setError] = useState<ErrorMessage>()
+  useEffect(() => {
+    setError(record.errors?.[property.path])
+  }, [record.errors?.[property.path]])
+
+  const handleBlur = () => {
+    setError(undefined)
+    onChange(property.path, value)
+  }
 
   useEffect(() => {
     if (value !== propValue) {
@@ -23,7 +33,7 @@ const Edit: FC<EditPropertyProps> = (props) => {
   }, [propValue])
 
   return (
-    <FormGroup error={Boolean(error)}>
+    <FormGroup error={!!error}>
       <PropertyLabel property={property} />
       <PhoneInput
         id={property.path}
@@ -34,7 +44,7 @@ const Edit: FC<EditPropertyProps> = (props) => {
         searchPlaceholder={translateLabel('search', resource.id)}
         searchNotFound={translateMessage('noCountryFound', resource.id)}
         onChange={setValue}
-        onBlur={(): void => onChange(property.path, value)}
+        onBlur={handleBlur}
         value={value}
         {...property.props as PhoneInputProps}
       />

@@ -5,13 +5,15 @@ import { Input, FormGroup, FormMessage } from '@adminjs/design-system'
 import { EditPropertyProps } from '../base-property-props'
 import { recordPropertyIsEqual } from '../record-property-is-equal'
 import { PropertyLabel } from '../utils/property-label'
-import allowOverride from '../../../hoc/allow-override'
 import { ErrorMessage } from '../../../interfaces'
+import { useTranslation } from '../../../hooks'
 
 const Edit: FC<EditPropertyProps> = (props) => {
-  const { onChange, property, record } = props
-  const propValue = record.params?.[property.path] ?? ''
+  const { onChange, property, record, resource } = props
+  const propValue = JSON.stringify(record.params?.[property.path] ?? {}, null, 2)
   const [value, setValue] = useState(propValue)
+
+  const { tm } = useTranslation()
 
   const [error, setError] = useState<ErrorMessage>()
   useEffect(() => {
@@ -19,8 +21,13 @@ const Edit: FC<EditPropertyProps> = (props) => {
   }, [record.errors?.[property.path]])
 
   const handleBlur = () => {
-    setError(undefined)
-    onChange(property.path, value)
+    try {
+      const json = JSON.parse(value)
+      onChange(property.path, json)
+      setError(undefined)
+    } catch (err) {
+      setError({ message: tm('invalidJSON', resource.id), type: 'ValidationError' })
+    }
   }
 
   useEffect(() => {
@@ -49,4 +56,4 @@ const Edit: FC<EditPropertyProps> = (props) => {
   )
 }
 
-export default allowOverride(memo(Edit, recordPropertyIsEqual), 'DefaultTextareaEditProperty')
+export default memo(Edit, recordPropertyIsEqual)

@@ -29,7 +29,7 @@ const ShowKeyValuePair: React.FC<ShowKeyValuePairProps> = (props) => {
       <FormGroup mb="0px">
         <Input
           placeholder={tm('valuePlaceholder')}
-          value={objectValue}
+          value={JSON.stringify(objectValue)}
           disabled
         />
       </FormGroup>

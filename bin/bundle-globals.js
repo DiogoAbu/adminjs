@@ -20,6 +20,7 @@ const env = require('../src/backend/bundler/bundler-env')
 
 const run = async () => {
   const inputOptions = {
+    inlineDynamicImports: true,
     input: `${__dirname}/../src/frontend/global-entry.js`,
     plugins: [
       resolve({

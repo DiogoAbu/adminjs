@@ -6,13 +6,23 @@ import { EditPropertyProps } from '../base-property-props'
 import { recordPropertyIsEqual } from '../record-property-is-equal'
 import { PropertyLabel } from '../utils/property-label'
 import allowOverride from '../../../hoc/allow-override'
+import { ErrorMessage } from '../../../interfaces'
 
 const Edit: React.FC<EditPropertyProps> = (props) => {
   const { property, record, onChange } = props
   const propValue = record.params[property.path]
   const [value, setValue] = useState(propValue)
-  const error = record.errors && record.errors[property.path]
   const [isInput, setIsInput] = useState(false)
+
+  const [error, setError] = useState<ErrorMessage>()
+  useEffect(() => {
+    setError(record.errors?.[property.path])
+  }, [record.errors?.[property.path]])
+
+  const handleChange = () => {
+    setError(undefined)
+    onChange(property.path, value)
+  }
 
   useEffect(() => {
     if (value !== propValue) {
@@ -30,8 +40,8 @@ const Edit: React.FC<EditPropertyProps> = (props) => {
           id={property.path}
           name={property.path}
           onChange={(event) => setValue(event.target.value)}
-          onBlur={() => onChange(property.path, value)}
-          onKeyDown={(e) => e.keyCode === 13 && onChange(property.path, value)}
+          onBlur={handleChange}
+          onKeyDown={(e) => e.keyCode === 13 && handleChange()}
           value={value ?? ''}
           disabled={property.isDisabled}
           required={property.isRequired}

@@ -239,6 +239,18 @@ class BaseResource {
   }
 
   /**
+   * Delete many records by id
+   *
+   * @param  {Array<string | number>}  ids list of ids to delete
+   * @param  {ActionContext}           [context]
+   * @throws {ValidationError}           If there are validation errors it should be thrown
+   * @abstract
+   */
+  async deleteMany(ids: Array<string | number>, context?: ActionContext): Promise<void> {
+    throw new NotImplementedError('BaseResource#deleteMany')
+  }
+
+  /**
    * Assigns given decorator to the Resource. Than it will be available under
    * resource.decorate() method
    *

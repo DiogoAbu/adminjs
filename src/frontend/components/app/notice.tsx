@@ -7,7 +7,7 @@ import { dropNotice } from '../../store/actions/drop-notice'
 import { setNoticeProgress } from '../../store/actions/set-notice-progress'
 import allowOverride from '../../hoc/allow-override'
 
-const TIME_TO_DISAPPEAR = 3
+const TIME_TO_DISAPPEAR = 7
 
 export type NotifyProgress = (options: {
   noticeId: string; progress: number;

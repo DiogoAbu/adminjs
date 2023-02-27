@@ -101,6 +101,12 @@ describe('BaseResource', function () {
     })
   })
 
+  describe('#deleteMany', function () {
+    it('throws NotImplementedError', async function () {
+      expect(resource.deleteMany(['id'])).to.be.rejectedWith(NotImplementedError)
+    })
+  })
+
   describe('#decorate', function () {
     it('returns new Decorator when resource has been decorated', function () {
       sinon.stub(resource, 'properties').returns([])

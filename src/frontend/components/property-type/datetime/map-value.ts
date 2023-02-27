@@ -16,11 +16,15 @@ export default (
   if (!value) {
     return ''
   }
-  const date = new Date(value)
+  const date = new Date(typeof value === 'string' && isNumbersOnly(value) ? Number(value) : value)
   if (date) {
     const options = merge({}, defaultOptions, typeof intlOptions === 'function' ? intlOptions(type) : intlOptions)
     const formatter = new Intl.DateTimeFormat(undefined, options)
     return formatter.format(date)
   }
   return ''
+}
+
+function isNumbersOnly(str: string): boolean {
+  return /^\d+$/.test(str)
 }

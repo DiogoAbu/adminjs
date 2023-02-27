@@ -1,4 +1,4 @@
-import React, { MouseEvent, useCallback } from 'react'
+import React, { MouseEvent, useCallback, useEffect, useState } from 'react'
 import { Button, Section, FormGroup, FormMessage, Icon, Box } from '@adminjs/design-system'
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd'
 
@@ -7,7 +7,7 @@ import { flat } from '../../../../utils'
 import { EditPropertyPropsInArray } from '../base-property-props'
 import { PropertyLabel } from '../utils/property-label'
 import { convertToSubProperty } from './convert-to-sub-property'
-import { PropertyJSON } from '../../../interfaces'
+import { ErrorMessage, PropertyJSON } from '../../../interfaces'
 import { removeSubProperty } from './remove-sub-property'
 import allowOverride from '../../../hoc/allow-override'
 
@@ -63,8 +63,10 @@ const ItemRenderer: React.FC<EditProps & ItemRendererProps> = (props) => {
   )
 }
 
-const InputsInSection: React.FC<EditProps> = (props) => {
-  const { property, record, resource, onChange } = props
+const InputsInSection: React.FC<EditProps & {
+  setError: React.Dispatch<React.SetStateAction<ErrorMessage | undefined>>
+}> = (props) => {
+  const { property, record, resource, onChange, setError } = props
   const items = flat.get(record.params, property.path) || []
 
   const addNew = useCallback((event: MouseEvent): boolean => {
@@ -72,6 +74,7 @@ const InputsInSection: React.FC<EditProps> = (props) => {
       ...items,
       property.subProperties.length ? {} : '',
     ]
+    setError(undefined)
     onChange(property.path, newItems)
     event.preventDefault()
     return false
@@ -79,6 +82,7 @@ const InputsInSection: React.FC<EditProps> = (props) => {
 
   const removeItem = useCallback((event: MouseEvent, subProperty: PropertyJSON): boolean => {
     const newRecord = removeSubProperty(record, subProperty.path)
+    setError(undefined)
     onChange(newRecord)
     event.preventDefault()
     return false
@@ -93,6 +97,7 @@ const InputsInSection: React.FC<EditProps> = (props) => {
     const [sourceItem] = itemsCopy.splice(source.index, 1)
     itemsCopy.splice(destination.index, 0, sourceItem)
 
+    setError(undefined)
     onChange(property.path, itemsCopy)
   }, [record, onChange, property])
 
@@ -132,12 +137,16 @@ const InputsInSection: React.FC<EditProps> = (props) => {
 
 const Edit: React.FC<EditProps> = (props) => {
   const { property, record, testId } = props
-  const error = record.errors && record.errors[property.propertyPath]
+
+  const [error, setError] = useState<ErrorMessage>()
+  useEffect(() => {
+    setError(record.errors?.[property.propertyPath])
+  }, [record.errors?.[property.propertyPath]])
 
   return (
     <FormGroup error={!!error} data-testid={testId}>
       <PropertyLabel property={property} />
-      <InputsInSection {...props} />
+      <InputsInSection {...props} setError={setError} />
       <FormMessage>{error && error.message}</FormMessage>
     </FormGroup>
   )

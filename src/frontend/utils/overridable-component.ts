@@ -78,6 +78,7 @@ export type OverridableComponent =
   | 'DefaultTextareaShowProperty'
   | 'PropertyDescription'
   | 'PropertyLabel'
+  | 'JSONViewer'
 
 /**
  * Name of the components which can be overridden by ComponentLoader.
