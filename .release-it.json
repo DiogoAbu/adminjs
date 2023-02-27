@@ -16,6 +16,7 @@
   },
   "hooks": {
     "before:init": [
+      "node ./scripts/ensure-package-name.js",
       "npx yarn-lock-fix",
       "yarn clean",
       "yarn lint",
