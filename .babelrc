@@ -8,7 +8,7 @@
     }],
     "@babel/preset-typescript"
   ],
-  "plugins": ["babel-plugin-styled-components", "@loadable/babel-plugin"],
+  "plugins": ["babel-plugin-styled-components"],
   "only": ["src/", "spec/"],
   "ignore": [
     "src/frontend/assets/scripts/app-bundle.development.js",
