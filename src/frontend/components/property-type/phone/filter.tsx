@@ -17,7 +17,7 @@ const Filter: FC<FilterPropertyProps> = (props) => {
 
   return (
     <FormGroup variant="filter">
-      <PropertyLabel property={property} />
+      <PropertyLabel property={property} props={{ required: false }} />
       <PhoneInput
         id={property.path}
         inputProps={{

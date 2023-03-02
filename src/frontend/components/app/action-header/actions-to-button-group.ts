@@ -2,22 +2,25 @@ import { ButtonGroupProps, ButtonInGroupProps } from '@adminjs/design-system'
 
 import { actionHref, ActionJSON, buildActionTestId } from '../../../interfaces'
 import { DifferentActionParams } from '../../../hooks'
+import { TranslateFunction } from '../../../../utils'
 
 export type actionsToButtonGroupOptions = {
   actions: Array<ActionJSON>;
   params: DifferentActionParams;
   handleClick: ButtonInGroupProps['onClick'];
+  resourceId: string
+  translateAction: TranslateFunction
 }
 
 export const actionsToButtonGroup = (
   options: actionsToButtonGroupOptions,
 ): ButtonGroupProps['buttons'] => {
-  const { actions, params, handleClick } = options
+  const { actions, params, handleClick, resourceId, translateAction } = options
   const buttons = actions.map((action) => {
     const href = actionHref(action, params)
     return {
       icon: action.icon,
-      label: action.label,
+      label: translateAction(action.label, resourceId),
       variant: action.variant,
       source: action,
       href: href || undefined,

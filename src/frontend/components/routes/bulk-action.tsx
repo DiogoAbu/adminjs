@@ -66,7 +66,7 @@ const BulkAction: React.FC = () => {
 
   if (!records && !loading) {
     return (
-      <ErrorMessageBox title="No records">
+      <ErrorMessageBox title={translateMessage('No records')}>
         <p>{translateMessage('noRecordsSelected', resourceId)}</p>
       </ErrorMessageBox>
     )

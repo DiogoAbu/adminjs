@@ -6,6 +6,7 @@ import ErrorBoundary from '../app/error-boundary'
 import { ReduxState } from '../../store/store'
 import ErrorMessageBox from '../app/error-message'
 import allowOverride from '../../hoc/allow-override'
+import { useTranslation } from '../../hooks'
 
 declare const AdminJS: {
   UserComponents: Record<string, FunctionComponent>;
@@ -20,6 +21,7 @@ const Page: React.FC = () => {
   const params = useParams<PageRouteProps>()
   const { pageName } = params
   const [isClient, setIsClient] = useState(false)
+  const { tm } = useTranslation()
 
   const currentPage = pages.find((page) => page.name === pageName)
 
@@ -29,7 +31,7 @@ const Page: React.FC = () => {
 
   if (!currentPage) {
     return (
-      <ErrorMessageBox title="There is no page of given name">
+      <ErrorMessageBox title={tm('There is no page of given name')}>
         <p>
           Page:
           <b>{` "${pageName}" `}</b>
@@ -43,7 +45,7 @@ const Page: React.FC = () => {
 
   if (!Component || !isClient) {
     return (
-      <ErrorMessageBox title="No component specified">
+      <ErrorMessageBox title={tm('No component specified')}>
         <p>You have to specify component which will render this Page</p>
       </ErrorMessageBox>
     )

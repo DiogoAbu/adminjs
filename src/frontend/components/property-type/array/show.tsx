@@ -5,6 +5,7 @@ import { flat } from '../../../../utils'
 import { convertToSubProperty } from './convert-to-sub-property'
 import allowOverride from '../../../hoc/allow-override'
 import { ShowPropertyProps } from '../base-property-props'
+import { useTranslation } from '../../../hooks'
 
 type Props = ShowPropertyProps & {
   ItemComponent: typeof React.Component;
@@ -12,11 +13,16 @@ type Props = ShowPropertyProps & {
 
 const Show: React.FC<Props> = (props) => {
   const { property, record, ItemComponent } = props
+  const { translateProperty } = useTranslation()
 
   const items = flat.get(record.params, property.path) || []
 
   return (
-    <ValueGroup label={property.label}>
+    <ValueGroup
+      label={translateProperty(property.label, property.resourceId, {
+        defaultValue: property.label,
+      })}
+    >
       <Section>
         {(items || []).map((item, i) => {
           const itemProperty = convertToSubProperty(property, i)

@@ -3,6 +3,7 @@ import React from 'react'
 
 import { PropertyJSON } from '../../../../interfaces'
 import allowOverride from '../../../../hoc/allow-override'
+import { useTranslation } from '../../../../hooks'
 
 export type PropertyDescriptionProps = {
   property: PropertyJSON;
@@ -10,13 +11,20 @@ export type PropertyDescriptionProps = {
 
 const PropertyDescription: React.FC<PropertyDescriptionProps> = (props) => {
   const { property } = props
+  const { translateMessage } = useTranslation()
 
   if (!property.description) { return null }
   const direction = property.custom?.tooltipDirection || 'top'
 
   return (
     <Box mx="sm" display="inline-flex">
-      <Tooltip direction={direction} title={property.description} size="lg">
+      <Tooltip
+        direction={direction}
+        title={translateMessage(property.description, property.resourceId, {
+          defaultValue: property.description,
+        })}
+        size="lg"
+      >
         <Box>
           <Icon icon="Help" color="info" />
         </Box>

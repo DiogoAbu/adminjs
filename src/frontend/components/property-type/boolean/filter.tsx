@@ -1,10 +1,11 @@
 import React from 'react'
-import { FormGroup, Label, Select } from '@adminjs/design-system'
+import { FormGroup, Select } from '@adminjs/design-system'
 
 import mapValue from './map-value'
 import { FilterPropertyProps } from '../base-property-props'
 import allowOverride from '../../../hoc/allow-override'
 import { useTranslation } from '../../../hooks'
+import { PropertyLabel } from '../utils/property-label'
 
 const boolValue = (s: string): boolean => {
   if (/true/i.test(s)) {
@@ -15,7 +16,7 @@ const boolValue = (s: string): boolean => {
 
 const Filter: React.FC<FilterPropertyProps> = (props) => {
   const { resource, property, filter = {}, onChange } = props
-  const { translateProperty } = useTranslation()
+  const { translateProperty, translateLabel } = useTranslation()
 
   const value = typeof filter[property.path] === 'undefined' ? '' : boolValue(filter[property.path])
   const options = [
@@ -29,14 +30,14 @@ const Filter: React.FC<FilterPropertyProps> = (props) => {
   }
 
   return (
-    <FormGroup>
-      <Label>{property.label}</Label>
+    <FormGroup variant="filter">
+      <PropertyLabel property={property} props={{ required: false }} />
       <Select
-        variant="filter"
         value={typeof selected === 'undefined' ? '' : selected}
         isClearable
         options={options}
         onChange={handleChange}
+        placeholder={translateLabel('select...', resource.id)}
       />
     </FormGroup>
   )

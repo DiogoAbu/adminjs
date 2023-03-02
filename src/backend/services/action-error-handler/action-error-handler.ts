@@ -20,7 +20,7 @@ const actionErrorHandler = (
     || error instanceof NotFoundError
     || error instanceof AppError
   ) {
-    const { record, resource, currentAdmin, action } = context
+    const { record, currentAdmin, action } = context
 
     const baseError: RecordError | null = error.baseError ?? null
     let baseMessage = ''
@@ -28,13 +28,11 @@ const actionErrorHandler = (
     let meta: any
 
     if (error instanceof ValidationError) {
-      baseMessage = error.baseError?.message
-        || context.translateMessage('thereWereValidationErrors', resource.id())
+      baseMessage = error.baseError?.message || 'thereWereValidationErrors'
       errors = error.propertyErrors
     } else {
       // ForbiddenError, NotFoundError, AppError
-      baseMessage = error.baseMessage
-        || context.translateMessage('anyForbiddenError', resource.id())
+      baseMessage = error.baseMessage || 'anyForbiddenError'
     }
 
     // Add required meta data for the list action

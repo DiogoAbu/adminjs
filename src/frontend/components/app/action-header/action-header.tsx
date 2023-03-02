@@ -28,7 +28,7 @@ const ActionHeader: React.FC<ActionHeaderProps> = (props) => {
     resource, toggleFilter, actionPerformed, record, action, tag, omitActions,
   } = props
 
-  const { translateButton } = useTranslation()
+  const { translateAction, translateButton, translateMessage } = useTranslation()
   const navigate = useNavigate()
   const actionResponseHandler = useActionResponseHandler(actionPerformed)
 
@@ -45,6 +45,7 @@ const ActionHeader: React.FC<ActionHeaderProps> = (props) => {
       params,
       actionResponseHandler,
       navigate,
+      translateMessage,
     })(event)
   )
 
@@ -55,6 +56,8 @@ const ActionHeader: React.FC<ActionHeaderProps> = (props) => {
       : resource.resourceActions.filter((ra) => ra.name === 'new' && (!action || action.name !== ra.name)),
     params,
     handleClick: handleActionClick,
+    resourceId,
+    translateAction,
   })
 
   if (toggleFilter) {
@@ -73,6 +76,8 @@ const ActionHeader: React.FC<ActionHeaderProps> = (props) => {
       : [],
     params: { resourceId },
     handleClick: handleActionClick,
+    resourceId,
+    translateAction,
   })
 
   const title = action ? action.label : resource.name
@@ -99,7 +104,7 @@ const ActionHeader: React.FC<ActionHeaderProps> = (props) => {
             {action.showInDrawer ? (
               <StyledBackButton showInDrawer={action.showInDrawer} />
             ) : ''}
-            {title}
+            {translateAction(title, resource.id)}
             {tag ? (<Badge variant="primary" ml="default">{tag}</Badge>) : ''}
           </CssHComponent>
         </Box>

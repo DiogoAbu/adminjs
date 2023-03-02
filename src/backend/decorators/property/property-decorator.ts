@@ -123,7 +123,7 @@ class PropertyDecorator {
    * @return  {string}
    */
   label(): string {
-    return this._admin.translateProperty(this.propertyPath, this._resource.id())
+    return this.propertyPath
   }
 
   /**
@@ -152,11 +152,7 @@ class PropertyDecorator {
     if (values) {
       return values.map((val) => ({
         value: val,
-        label: this._admin.translateProperty(
-          `${this.propertyPath}.${val}`,
-          this._resource.id(),
-          { defaultValue: val },
-        ),
+        label: '',
       }))
     }
     return null
@@ -182,7 +178,7 @@ class PropertyDecorator {
    * @param {'list' | 'edit' | 'show' | 'filter'} where
    */
   isVisible(where: PropertyPlace): boolean {
-    if (typeof this.options.isVisible === 'object' && this.options.isVisible !== 'null') {
+    if (this.options.isVisible && typeof this.options.isVisible === 'object') {
       return !!this.options.isVisible[where]
     }
     if (typeof this.options.isVisible === 'boolean') {
@@ -278,11 +274,7 @@ class PropertyDecorator {
       resourceId: this._resource.id(),
       isVirtual: this.isVirtual,
       props: this.options.props || {},
-      description: this.options.description
-        ? this._admin.translateMessage(
-          this.options.description,
-          this._resource.id(),
-        ) : undefined,
+      description: this.options.description,
     }
   }
 

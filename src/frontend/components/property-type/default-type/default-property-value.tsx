@@ -8,7 +8,7 @@ import { ShowPropertyProps } from '../base-property-props'
 const DefaultPropertyValue: React.FC<ShowPropertyProps> = (props) => {
   const { property, record, resource } = props
 
-  const { translateLabel } = useTranslation()
+  const { translateLabel, translateProperty } = useTranslation()
 
   const rawValue = record?.params[property.path]
 
@@ -24,7 +24,11 @@ const DefaultPropertyValue: React.FC<ShowPropertyProps> = (props) => {
     }
 
     return (
-      <Badge>{option?.label ? translateLabel(option.label, resource.id) : rawValue}</Badge>
+      <Badge>
+        {option.label
+          ? translateLabel(option.label, resource.id, { defaultValue: option.label })
+          : translateProperty(`${property.path}.${option.value}`, resource.id, { defaultValue: option.value })}
+      </Badge>
     )
   }
 

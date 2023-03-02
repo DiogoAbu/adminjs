@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { FormGroup, Label, SelectAsync } from '@adminjs/design-system'
+import { FormGroup, SelectAsync } from '@adminjs/design-system'
 
 import ApiClient from '../../../utils/api-client'
 import { FilterPropertyProps, SelectRecord } from '../base-property-props'
 import allowOverride from '../../../hoc/allow-override'
 import { FilterSelectCustom } from '../../../interfaces'
 import { useTranslation } from '../../../hooks/use-translation'
+import { PropertyLabel } from '../utils/property-label'
 
 const api = new ApiClient()
 
@@ -15,7 +16,7 @@ const Filter: React.FC<FilterPropertyProps> = (props) => {
   const { property, filter, onChange } = props
   const { filterFilters } = property.custom as FilterSelectCustom
 
-  const { i18n } = useTranslation()
+  const { i18n, translateLabel } = useTranslation()
 
   const [options, setOptions] = useState<SelectOptions>([])
   const [shouldRender, setShouldRender] = useState(false)
@@ -108,16 +109,16 @@ const Filter: React.FC<FilterPropertyProps> = (props) => {
   const selected = (options || []).find((o) => String(o.value) === String(value))
 
   return (
-    <FormGroup>
-      <Label>{property.label}</Label>
+    <FormGroup variant="filter">
+      <PropertyLabel property={property} props={{ required: false }} />
       <SelectAsync
-        variant="filter"
         value={typeof selected === 'undefined' ? '' : selected}
         isClearable
         cacheOptions
         loadOptions={loadOptions}
         onChange={handleChange}
         defaultOptions
+        placeholder={translateLabel('select...', property.reference as string)}
       />
     </FormGroup>
   )

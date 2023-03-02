@@ -30,7 +30,7 @@ export function useNavigationResources(
     href: resource.href || undefined,
     icon,
     isSelected: isSelected(resource.href, location),
-    label: translateLabel(resource.name),
+    label: translateLabel(resource.name, resource.id),
     id: resource.id,
     onClick: (event): void => {
       if (resource.href) {
@@ -55,7 +55,7 @@ export function useNavigationResources(
       } else {
         memo[key] = {
           elements: [enrichResource(resource)],
-          label: translateLabel(resource.navigation?.name),
+          label: translateLabel(resource.navigation?.name, resource.id),
           icon: resource.navigation?.icon,
           onClick: (): void => setOpenElements({
             ...openElements,

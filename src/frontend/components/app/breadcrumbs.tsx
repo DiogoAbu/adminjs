@@ -81,19 +81,19 @@ const Breadcrumbs: React.FC<BreadcrumbProps> = (props) => {
   const listAction = resource.resourceActions.find(({ name }) => name === 'list')
   const action = resource.actions.find((a) => a.name === actionName)
   const h = new ViewHelpers()
-  const { translateLabel: tl } = useTranslation()
+  const { tl, ta } = useTranslation()
   const contentTag = getActionElementCss(resource.id, actionName, 'breadcrumbs')
   return (
     <Box flexGrow={1} className={cssClass('Breadcrumbs')} data-css={contentTag}>
       <BreadcrumbLink to={h.dashboardUrl()}>{tl('dashboard')}</BreadcrumbLink>
       {listAction ? (
         <BreadcrumbLink to={resource.href ? resource.href : '/'} className={record ? 'is-active' : ''}>
-          {resource.name}
+          {tl(resource.name, resource.id)}
         </BreadcrumbLink>
       ) : (
-        <BreadcrumbText>{resource.name}</BreadcrumbText>
+        <BreadcrumbText>{tl(resource.name, resource.id)}</BreadcrumbText>
       )}
-      {action && action.name !== 'list' && <BreadcrumbLink to="#">{action.label}</BreadcrumbLink>}
+      {action && action.name !== 'list' && <BreadcrumbLink to="#">{ta(action.label, resource.id)}</BreadcrumbLink>}
     </Box>
   )
 }

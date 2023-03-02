@@ -37,7 +37,7 @@ const SelectEdit: FC<CombinedProps & {
 }> = (props) => {
   const { record, property, onChange, resource, setError } = props
 
-  const { translateLabel } = useTranslation()
+  const { translateLabel, translateProperty } = useTranslation()
 
   const handleChange = (s) => {
     setError(undefined)
@@ -49,9 +49,11 @@ const SelectEdit: FC<CombinedProps & {
   }
   const propValue = record.params?.[property.path] ?? ''
   const selected = property.availableValues.find((av) => av.value === propValue)
-  const options = property.availableValues.map((e) => ({
-    ...e,
-    label: translateLabel(e.label, resource.id),
+  const options = property.availableValues.map((option) => ({
+    ...option,
+    label: option.label
+      ? translateLabel(option.label, resource.id, { defaultValue: option.label })
+      : translateProperty(`${property.path}.${option.value}`, resource.id, { defaultValue: option.value }),
   }))
 
   return (
@@ -60,6 +62,7 @@ const SelectEdit: FC<CombinedProps & {
       options={options}
       onChange={handleChange}
       isDisabled={property.isDisabled}
+      placeholder={translateLabel('select...', resource.id)}
       // @ts-ignore
       required={property.isRequired}
       {...property.props}

@@ -165,6 +165,7 @@ export interface FilterTypes {
 }
 
 export interface FilterSelectCustom {
+  propertyOnLocalizedEntity?: string;
   newFilters?: FilterTypes
   editFilters?: FilterTypes
   filterFilters?: FilterTypes

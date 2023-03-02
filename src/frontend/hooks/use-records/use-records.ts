@@ -35,7 +35,6 @@ function useRecords(resourceId: string): UseRecordsResult {
   const navigate = useNavigate()
   const addNotice = useNotice()
   const { translateMessage } = useTranslation()
-  const onNotice = useNotice()
 
   const fetchData = (): Promise<AxiosResponse<ListActionResponse>> => {
     setLoading(true)
@@ -48,7 +47,7 @@ function useRecords(resourceId: string): UseRecordsResult {
     promise.then((response) => {
       const listActionResponse = response.data as ListActionResponse
       if (listActionResponse.notice) {
-        onNotice(listActionResponse.notice)
+        addNotice(listActionResponse.notice)
       }
       if (listActionResponse.redirectUrl) {
         navigate(listActionResponse.redirectUrl)

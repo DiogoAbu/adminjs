@@ -3,7 +3,7 @@ import { Section, FormGroup, Input, Box, ValueGroup } from '@adminjs/design-syst
 
 import { ShowPropertyProps } from '../base-property-props'
 import { flat } from '../../../../utils/flat'
-import { useTranslation } from '../../../hooks/use-translation'
+import { useTranslation } from '../../../hooks'
 
 export type ShowKeyValuePairProps = {
   objectValue: string
@@ -39,11 +39,16 @@ const ShowKeyValuePair: React.FC<ShowKeyValuePairProps> = (props) => {
 
 const Show: React.FC<ShowPropertyProps> = (props) => {
   const { property, record } = props
+  const { translateProperty } = useTranslation()
 
   const objectValue: Record<string, string> = flat.get(record.params, property.path) ?? {}
 
   return (
-    <ValueGroup label={property.label}>
+    <ValueGroup
+      label={translateProperty(property.label, property.resourceId, {
+        defaultValue: property.label,
+      })}
+    >
       <Section>
         {Object.entries(objectValue).map(([key, value]) => (
           <ShowKeyValuePair

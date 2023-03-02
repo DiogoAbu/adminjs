@@ -1,5 +1,6 @@
 import { ButtonGroupProps } from '@adminjs/design-system'
 import { expect } from 'chai'
+import sinon from 'sinon'
 import factory from 'factory-girl'
 import { ActionJSON } from '../../../interfaces'
 import { actionsToButtonGroup } from './actions-to-button-group'
@@ -28,6 +29,8 @@ describe('actionsToButtonGroup', () => {
         actions,
         params,
         handleClick,
+        translateAction: sinon.stub<any, string>().returns('translatedAction'),
+        resourceId: params.resourceId,
       })
     })
 
@@ -68,6 +71,8 @@ describe('actionsToButtonGroup', () => {
         ],
         params,
         handleClick,
+        translateAction: sinon.stub<any, string>().returns('translatedAction'),
+        resourceId: params.resourceId,
       })
     })
 
@@ -99,6 +104,8 @@ describe('actionsToButtonGroup', () => {
         actions,
         params,
         handleClick,
+        translateAction: sinon.stub<any, string>().returns('translatedAction'),
+        resourceId: params.resourceId,
       })
     })
 

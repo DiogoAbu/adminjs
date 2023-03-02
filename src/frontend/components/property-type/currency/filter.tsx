@@ -14,7 +14,7 @@ const Filter: FC<EditPropertyProps> = (props) => {
 
   return (
     <FormGroup variant="filter">
-      <PropertyLabel property={property} />
+      <PropertyLabel property={property} props={{ required: false }} />
       <CurrencyInput
         id={property.path}
         name={`filter-${property.path}`}
