@@ -77,6 +77,7 @@ const translations = {
     welcomeOnBoard_title: 'Welcome on Board!',
     welcomeOnBoard_subtitle: 'Now you are one of us! We prepared a few tips for you to start:',
     loginWelcome: 'to AdminJS – the world\'s leading open-source auto-generated admin panel for your Node.js application that allows you to manage all your data in one place',
+    loginFormTitle: '{{companyName}}',
     addingResources_title: 'Adding Resources',
     addingResources_subtitle: 'How to add new resources to the sidebar',
     customizeResources_title: 'Customize Resources',

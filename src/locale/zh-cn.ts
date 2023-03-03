@@ -72,6 +72,7 @@ const translations = {
     welcomeOnBoard_title: '欢迎使用!',
     welcomeOnBoard_subtitle: '现在你是我们的一员了! 我们为你准备了一些小贴士，供您使用。',
     loginWelcome: '到 AdminJS – 世界领先的开源自动生成管理面板, 可用于你的 Node.js 应用程序, 以将所有数据汇于一处管理',
+    loginFormTitle: '{{companyName}}',
     addingResources_title: '添加资源',
     addingResources_subtitle: '如何向侧边栏添加资源',
     customizeResources_title: '自定义资源',

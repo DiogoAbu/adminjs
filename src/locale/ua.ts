@@ -75,6 +75,7 @@ const translations = {
     welcomeOnBoard_title: 'Ласкаво просимо на борт!',
     welcomeOnBoard_subtitle: 'Тепер Ви один із нас! Ми підготували для Вас кілька порад для початку:',
     loginWelcome: 'до AdminJS - провідної адміністраційної панелі з відкритим кодом для програм Node.js, яка дозволяє керувати всіма своїми даними в одному місці',
+    loginFormTitle: '{{companyName}}',
     addingResources_title: 'Додавання ресурсів',
     addingResources_subtitle: 'Як додати нові ресурси до бічної панелі',
     customizeResources_title: 'Налаштування ресурсів',

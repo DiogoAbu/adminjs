@@ -77,6 +77,7 @@ const translations = {
     welcomeOnBoard_title: 'Bem-vindo à bordo!',
     welcomeOnBoard_subtitle: 'Agora você é um de nós! Preparamos algumas dicas para você começar:',
     loginWelcome: 'Ao AdminJS - o melhor framework admin para aplicações Node.js, baseado em React.',
+    loginFormTitle: '{{companyName}}',
     addingResources_title: 'Adicionando Recursos',
     addingResources_subtitle: 'Como adicionar novos recursos à barra lateral',
     customizeResources_title: 'Personalizar Recursos',

@@ -72,6 +72,7 @@ const translations = {
     welcomeOnBoard_title: 'Willkommen an Bord!',
     welcomeOnBoard_subtitle: 'Jetzt gehören Sie zu uns! Wir haben ein paar Tipps für Sie vorbereitet, damit Sie loslegen können:',
     loginWelcome: 'zu AdminJS - dem weltweit führenden, automatisch generierten Open-Source-Admin-Panel für Ihre Node.js-Anwendung, mit dem Sie alle Ihre Daten an einem Ort verwalten können',
+    loginFormTitle: '{{companyName}}',
     addingResources_title: 'Ressourcen Hinzufügen',
     addingResources_subtitle: 'So fügen Sie neue Ressourcen zur Seitenleiste hinzu',
     customizeResources_title: 'Ressourcen anpassen',

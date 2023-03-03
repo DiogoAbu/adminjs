@@ -64,9 +64,9 @@ export const Login: React.FC<LoginProps> = (props) => {
             display={['none', 'none', 'block']}
             position="relative"
           >
-            <H2 fontWeight="lighter">{translateLabel('loginWelcome')}</H2>
+            <H2 fontWeight="lighter">{translateLabel('loginWelcome', { companyName: branding.companyName })}</H2>
             <Text fontWeight="lighter" mt="default">
-              {translateMessage('loginWelcome')}
+              {translateMessage('loginWelcome', { companyName: branding.companyName })}
             </Text>
             <Text textAlign="center" p="xxl">
               <Box display="inline" mr="default">
@@ -94,7 +94,7 @@ export const Login: React.FC<LoginProps> = (props) => {
                   src={branding.logo}
                   alt={branding.companyName}
                 />
-              ) : branding.companyName}
+              ) : translateMessage('loginFormTitle', { companyName: branding.companyName })}
             </H5>
             {message && (
               <MessageBox
