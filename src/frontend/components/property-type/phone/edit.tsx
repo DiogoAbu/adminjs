@@ -3,7 +3,7 @@ import React, { FC, memo, useEffect, useState } from 'react'
 
 import { EditPropertyProps } from '../base-property-props'
 import { recordPropertyIsEqual } from '../record-property-is-equal'
-import { PropertyLabel } from '../utils/property-label'
+import { PropertyLabel, isPhoneValid } from '../utils'
 import allowOverride from '../../../hoc/allow-override'
 import { useTranslation } from '../../../hooks'
 import { ErrorMessage } from '../../../interfaces'
@@ -46,6 +46,7 @@ const Edit: FC<EditPropertyProps> = (props) => {
         onChange={setValue}
         onBlur={handleBlur}
         value={value}
+        isValid={(phone) => (property.isRequired || phone ? isPhoneValid(phone) : true)}
         {...property.props as PhoneInputProps}
       />
       <FormMessage>{error && error.message}</FormMessage>
