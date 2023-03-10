@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom'
 import { createGlobalStyle } from 'styled-components'
 import { Box, Overlay, Reset } from '@adminjs/design-system'
 import { useLocation } from 'react-router'
+import { useSelector } from 'react-redux'
 
 import ViewHelpers from '../../backend/utils/view-helpers/view-helpers'
 import Sidebar from './app/sidebar/sidebar'
@@ -13,7 +14,9 @@ import allowOverride from '../hoc/allow-override'
 import {
   DashboardRoute, ResourceActionRoute, RecordActionRoute, PageRoute, BulkActionRoute, ResourceRoute,
 } from './routes'
-import useHistoryListen from '../hooks/use-history-listen'
+import { useTranslation, useHistoryListen } from '../hooks'
+import { ReduxState } from '../store'
+import { BrandingOptions } from '../..'
 
 const GlobalStyle = createGlobalStyle`
   html, body, #app {
@@ -31,7 +34,19 @@ const App: React.FC = () => {
   const [sidebarVisible, toggleSidebar] = useState(false)
   const location = useLocation()
 
+  const branding = useSelector<ReduxState, BrandingOptions>((state) => state.branding)
+  const { tm, i18n } = useTranslation()
+
   useHistoryListen()
+
+  useEffect(() => {
+    if (branding.documentTitle) {
+      document.title = tm(branding.documentTitle, {
+        companyName: branding.companyName,
+        defaultValue: branding.documentTitle,
+      })
+    }
+  }, [tm, branding.documentTitle, i18n.language])
 
   useEffect(() => {
     if (sidebarVisible) { toggleSidebar(false) }

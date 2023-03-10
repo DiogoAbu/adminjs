@@ -43,12 +43,12 @@ export async function getComponentHtml<T extends Record<string, unknown>>(
   const { locale } = store.getState()
   i18n
     .init({
+      lng: locale.language,
       resources: {
         [locale.language]: {
           translation: locale.translations,
         },
       },
-      lng: locale.language,
       interpolation: { escapeValue: false },
     })
 
@@ -76,7 +76,9 @@ export async function getComponentHtml<T extends Record<string, unknown>>(
     <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <title>${branding.documentTitle}</title>
+      <title>
+        ${i18n.t(`messages.${branding.documentTitle}`, { companyName: branding.companyName, defaultValue: branding.documentTitle || branding.companyName })}
+      </title>
       ${style}
       ${faviconTag}
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" type="text/css">
