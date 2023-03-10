@@ -327,6 +327,11 @@ export type BrandingOptions = {
    */
   companyName?: string;
   /**
+   * The title of the document. The title must be text-only, and
+   * it is shown in the browser's title bar or in the page's tab.
+   */
+  documentTitle?: string;
+  /**
    * CSS theme.
    */
   theme?: Partial<ThemeOverride>;

@@ -76,7 +76,7 @@ export async function getComponentHtml<T extends Record<string, unknown>>(
     <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <title>${branding.companyName}</title>
+      <title>${branding.documentTitle}</title>
       ${style}
       ${faviconTag}
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" type="text/css">

@@ -6,6 +6,7 @@ import ViewHelpers from '../view-helpers/view-helpers'
 
 const defaultBranding: AdminJSOptions['branding'] = {
   companyName: 'Company',
+  documentTitle: 'Company',
   withMadeWithLove: true,
 }
 const defaultAssets = {
