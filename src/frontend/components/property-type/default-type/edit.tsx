@@ -1,18 +1,25 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import React, { FC, useState, memo, useEffect } from 'react'
+import React, { FC, useState, memo, useEffect, useRef, RefObject } from 'react'
 import { Input, FormMessage, FormGroup, Select } from '@adminjs/design-system'
 
 import { EditPropertyProps } from '../base-property-props'
 import { recordPropertyIsEqual } from '../record-property-is-equal'
 import { PropertyLabel } from '../utils/property-label'
+import { PropertyLengthCounterRef } from '../utils/property-length-counter'
 import allowOverride from '../../../hoc/allow-override'
 import { useTranslation } from '../../../hooks'
 import { ErrorMessage } from '../../../interfaces'
 
-type CombinedProps = EditPropertyProps
+type CombinedProps = EditPropertyProps & {
+  setError: React.Dispatch<React.SetStateAction<ErrorMessage | undefined>>
+}
 
 const Edit: FC<CombinedProps> = (props) => {
   const { property, record } = props
+
+  const { tm } = useTranslation()
+
+  const counterRef = useRef<PropertyLengthCounterRef>(null)
 
   const [error, setError] = useState<ErrorMessage>()
   useEffect(() => {
@@ -21,20 +28,18 @@ const Edit: FC<CombinedProps> = (props) => {
 
   return (
     <FormGroup error={!!error}>
-      <PropertyLabel property={property} />
+      <PropertyLabel property={property} counterRef={counterRef} />
       {property.availableValues ? (
         <SelectEdit {...props} setError={setError} />
       ) : (
-        <TextEdit {...props} setError={setError} />
+        <TextEdit {...props} setError={setError} counterRef={counterRef} />
       )}
-      <FormMessage>{error && error.message}</FormMessage>
+      <FormMessage>{error && tm(error.message, error.resourceId || '', error.options)}</FormMessage>
     </FormGroup>
   )
 }
 
-const SelectEdit: FC<CombinedProps & {
-  setError: React.Dispatch<React.SetStateAction<ErrorMessage | undefined>>
-}> = (props) => {
+const SelectEdit: FC<CombinedProps> = (props) => {
   const { record, property, onChange, resource, setError } = props
 
   const { translateLabel, translateProperty } = useTranslation()
@@ -71,9 +76,9 @@ const SelectEdit: FC<CombinedProps & {
 }
 
 const TextEdit: FC<CombinedProps & {
-  setError: React.Dispatch<React.SetStateAction<ErrorMessage | undefined>>
+  counterRef: RefObject<PropertyLengthCounterRef>
 }> = (props) => {
-  const { property, record, onChange, setError } = props
+  const { property, record, onChange, setError, counterRef } = props
   const propValue = record.params?.[property.path] ?? ''
   const [value, setValue] = useState(propValue)
 
@@ -87,6 +92,10 @@ const TextEdit: FC<CombinedProps & {
       setValue(propValue)
     }
   }, [propValue])
+
+  useEffect(() => {
+    counterRef.current?.updateLength(value.length)
+  }, [value])
 
   return (
     <Input

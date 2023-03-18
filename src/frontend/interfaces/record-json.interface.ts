@@ -1,3 +1,4 @@
+import { TOptions } from 'i18next'
 import { ErrorTypeEnum } from '../../utils/error-type.enum'
 import { ParamsType, RecordError } from '../../backend'
 import { ActionJSON } from './action/action-json.interface'
@@ -11,6 +12,8 @@ export type ErrorMessage = {
   message: string;
   /** Error type */
   type?: ErrorTypeEnum | string;
+  resourceId?: string;
+  options?: TOptions
 }
 
 /**

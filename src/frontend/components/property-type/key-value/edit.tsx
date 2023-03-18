@@ -5,7 +5,7 @@ import { PropertyJSON } from '../../../interfaces/property-json'
 import { EditPropertyProps } from '../base-property-props'
 import { PropertyLabel } from '../utils/property-label'
 import { flat } from '../../../../utils/flat'
-import { useTranslation } from '../../../hooks/use-translation'
+import { useTranslation } from '../../../hooks'
 import { RecordError } from '../../../../backend/utils/errors'
 
 export type EditKeyValuePairProps = {
@@ -44,7 +44,7 @@ const EditKeyValuePair: React.FC<EditKeyValuePairProps> = (props) => {
             value={currentKey}
             {...(property.props?.keyInputProps ?? {})}
           />
-          {error && <FormMessage>{error.message}</FormMessage>}
+          <FormMessage>{error && tm(error.message, error.resourceId || '', error.options)}</FormMessage>
         </FormGroup>
         <FormGroup mb="0px">
           <Input
@@ -170,7 +170,7 @@ const Edit: React.FC<EditPropertyProps> = (props) => {
           {tb('addNewItem', resource.id)}
         </Button>
       </Section>
-      <FormMessage>{error && error.message}</FormMessage>
+      <FormMessage>{error && tm(error.message, error.resourceId || '', error.options)}</FormMessage>
     </FormGroup>
   )
 }

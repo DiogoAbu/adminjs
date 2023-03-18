@@ -23,7 +23,7 @@ const Edit: React.FC<EditPropertyProps> = (props) => {
     onChange(property.path, date)
   }
 
-  const { i18n, translateLabel } = useTranslation()
+  const { i18n, tl, tm } = useTranslation()
 
   const {
     dateFormat,
@@ -44,20 +44,20 @@ const Edit: React.FC<EditPropertyProps> = (props) => {
         // @ts-ignore
         inputMask={inputMask}
         locale={i18n.language}
-        timeInputLabel={translateLabel('time')}
-        timeCaption={translateLabel('time')}
-        previousMonthAriaLabel={translateLabel('previousMonth')}
-        previousMonthButtonLabel={translateLabel('previousMonth')}
-        nextMonthAriaLabel={translateLabel('nextMonth')}
-        nextMonthButtonLabel={translateLabel('nextMonth')}
-        previousYearAriaLabel={translateLabel('previousYear')}
-        previousYearButtonLabel={translateLabel('previousYear')}
-        nextYearAriaLabel={translateLabel('nextYear')}
-        nextYearButtonLabel={translateLabel('nextYear')}
+        timeInputLabel={tl('time')}
+        timeCaption={tl('time')}
+        previousMonthAriaLabel={tl('previousMonth')}
+        previousMonthButtonLabel={tl('previousMonth')}
+        nextMonthAriaLabel={tl('nextMonth')}
+        nextMonthButtonLabel={tl('nextMonth')}
+        previousYearAriaLabel={tl('previousYear')}
+        previousYearButtonLabel={tl('previousYear')}
+        nextYearAriaLabel={tl('nextYear')}
+        nextYearButtonLabel={tl('nextYear')}
         required={property.isRequired}
         {...property.props}
       />
-      <FormMessage>{error && error.message}</FormMessage>
+      <FormMessage>{error && tm(error.message, error.resourceId || '', error.options)}</FormMessage>
     </FormGroup>
   )
 }

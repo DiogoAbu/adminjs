@@ -10,6 +10,7 @@ import { convertToSubProperty } from './convert-to-sub-property'
 import { ErrorMessage, PropertyJSON } from '../../../interfaces'
 import { removeSubProperty } from './remove-sub-property'
 import allowOverride from '../../../hoc/allow-override'
+import { useTranslation } from '../../../hooks'
 
 type EditProps = Required<EditPropertyPropsInArray>
 
@@ -138,6 +139,8 @@ const InputsInSection: React.FC<EditProps & {
 const Edit: React.FC<EditProps> = (props) => {
   const { property, record, testId } = props
 
+  const { tm } = useTranslation()
+
   const [error, setError] = useState<ErrorMessage>()
   useEffect(() => {
     setError(record.errors?.[property.propertyPath])
@@ -147,7 +150,7 @@ const Edit: React.FC<EditProps> = (props) => {
     <FormGroup error={!!error} data-testid={testId}>
       <PropertyLabel property={property} />
       <InputsInSection {...props} setError={setError} />
-      <FormMessage>{error && error.message}</FormMessage>
+      <FormMessage>{error && tm(error.message, error.resourceId || '', error.options)}</FormMessage>
     </FormGroup>
   )
 }

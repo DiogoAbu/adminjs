@@ -1,3 +1,4 @@
+import { TOptions } from 'i18next'
 import { ErrorTypeEnum } from '../../../utils/error-type.enum'
 
 /**
@@ -14,6 +15,8 @@ export type RecordError = {
    * human readable message
    */
   message: string;
+  resourceId?: string;
+  options?: TOptions;
 }
 
 export default RecordError

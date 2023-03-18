@@ -11,7 +11,7 @@ import { ErrorMessage } from '../../../interfaces'
 const Edit: FC<EditPropertyProps> = (props) => {
   const { onChange, property, record, resource } = props
 
-  const { translateLabel, translateMessage } = useTranslation()
+  const { tl, tm } = useTranslation()
 
   const propValue = record.params?.[property.path] ?? ''
   const [value, setValue] = useState(propValue)
@@ -41,15 +41,15 @@ const Edit: FC<EditPropertyProps> = (props) => {
           name: property.path,
           required: property.isRequired,
         }}
-        searchPlaceholder={translateLabel('search', resource.id)}
-        searchNotFound={translateMessage('noCountryFound', resource.id)}
+        searchPlaceholder={tl('search', resource.id)}
+        searchNotFound={tm('noCountryFound', resource.id)}
         onChange={setValue}
         onBlur={handleBlur}
         value={value}
         isValid={(phone) => (property.isRequired || phone ? isPhoneValid(phone) : true)}
         {...property.props as PhoneInputProps}
       />
-      <FormMessage>{error && error.message}</FormMessage>
+      <FormMessage>{error && tm(error.message, error.resourceId || '', error.options)}</FormMessage>
     </FormGroup>
   )
 }

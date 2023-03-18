@@ -6,6 +6,7 @@ import { PropertyLabel } from '../utils/property-label'
 import { convertToSubProperty } from './convert-to-sub-property'
 import allowOverride from '../../../hoc/allow-override'
 import { ErrorMessage, RecordJSON } from '../../../interfaces'
+import { useTranslation } from '../../../hooks'
 
 type Props = {
   ItemComponent: typeof React.Component;
@@ -13,6 +14,8 @@ type Props = {
 
 const Edit: React.FC<Props & EditPropertyProps> = (props) => {
   const { property, record, ItemComponent, onChange } = props
+
+  const { tm } = useTranslation()
 
   const [error, setError] = useState<ErrorMessage>()
   useEffect(() => {
@@ -48,7 +51,7 @@ const Edit: React.FC<Props & EditPropertyProps> = (props) => {
           )
         })}
       </Section>
-      <FormMessage>{error && error.message}</FormMessage>
+      <FormMessage>{error && tm(error.message, error.resourceId || '', error.options)}</FormMessage>
     </FormGroup>
   )
 }

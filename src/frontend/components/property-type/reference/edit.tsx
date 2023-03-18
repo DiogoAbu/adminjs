@@ -35,7 +35,7 @@ const Edit: FC<CombinedProps> = (props) => {
     setError(record.errors?.[property.path])
   }, [record.errors?.[property.path]])
 
-  const { i18n, translateLabel } = useTranslation()
+  const { i18n, tl, tm } = useTranslation()
 
   if (!resourceId) {
     throw new Error(`Cannot reference resource in property '${property.path}'`)
@@ -240,7 +240,7 @@ const Edit: FC<CombinedProps> = (props) => {
         isClearable
         isDisabled={property.isDisabled}
         isLoading={!!loadingRecord}
-        placeholder={translateLabel('select...', resourceId)}
+        placeholder={tl('select...', resourceId)}
         {...property.props}
         // @ts-ignore
         ref={selectRef}
@@ -258,7 +258,7 @@ const Edit: FC<CombinedProps> = (props) => {
           required
         />
       )}
-      <FormMessage>{error?.message}</FormMessage>
+      <FormMessage>{error && tm(error.message, error.resourceId || '', error.options)}</FormMessage>
     </FormGroup>
   )
 }

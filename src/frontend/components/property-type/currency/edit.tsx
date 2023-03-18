@@ -6,10 +6,13 @@ import { PropertyLabel } from '../utils/property-label'
 import allowOverride from '../../../hoc/allow-override'
 import { CurrencyInputWrapper } from './currency-input-wrapper'
 import { ErrorMessage } from '../../../interfaces'
+import { useTranslation } from '../../../hooks'
 
 const Edit: FC<EditPropertyProps> = (props) => {
   const { onChange, property, record } = props
   const propValue = record.params?.[property.path] ?? ''
+
+  const { tm } = useTranslation()
 
   const [error, setError] = useState<ErrorMessage>()
   useEffect(() => {
@@ -30,7 +33,7 @@ const Edit: FC<EditPropertyProps> = (props) => {
         options={{ ...property.props, required: property.isRequired } as CurrencyInputProps}
         onChange={handleChange}
       />
-      <FormMessage>{error && error.message}</FormMessage>
+      <FormMessage>{error && tm(error.message, error.resourceId || '', error.options)}</FormMessage>
     </FormGroup>
   )
 }
