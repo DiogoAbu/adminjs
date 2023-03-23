@@ -105,7 +105,12 @@ export const Login: React.FC<LoginProps> = (props) => {
             )}
             <FormGroup>
               <Label required>{translateProperty('email')}</Label>
-              <Input name="email" placeholder={translateMessage('placeholder.email')} />
+              <Input
+                name="email"
+                placeholder={translateMessage('placeholder.email')}
+                autofocus
+                autoComplete="email"
+              />
             </FormGroup>
             <FormGroup>
               <Label required>{translateProperty('password')}</Label>
@@ -113,7 +118,7 @@ export const Login: React.FC<LoginProps> = (props) => {
                 type="password"
                 name="password"
                 placeholder={translateMessage('placeholder.password')}
-                autoComplete="new-password"
+                autoComplete="current-password"
               />
             </FormGroup>
             <Text mt="xl" textAlign="center">
