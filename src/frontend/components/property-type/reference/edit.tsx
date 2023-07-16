@@ -134,10 +134,14 @@ const Edit: FC<CombinedProps> = (props) => {
               query: optionRecord.id,
             })
 
-          const found = data.find(((e) => e.params.locale === i18n.language))?.params?.value
+          const found = data.find((e) => e.params.locale === i18n.language && !!e.params.value)
+            ?? data.find((e) => !!e.params.value)
+            ?? data[0]
           if (found) {
-            label = found
+            label = found.params.value
           }
+        } else {
+          console.error('No localized property found', custom.propertyOnLocalizedEntity)
         }
       } catch (err) {
         console.error('Reference value on edit action could not get localized value', err)

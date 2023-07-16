@@ -29,7 +29,10 @@ const ReferenceValue: React.FC<Props> = (props) => {
         query: record.params[property.path],
       })
       .then((data) => {
-        setLocalizedValue(data.find(((e) => e.params.locale === i18n.language))?.params?.value || '')
+        const found = data.find((e) => e.params.locale === i18n.language && !!e.params.value)
+          ?? data.find((e) => !!e.params.value)
+          ?? data[0]
+        setLocalizedValue(found?.params?.value)
       })
       .catch((err) => {
         console.error('Reference value could not get localized value', err)
