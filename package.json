@@ -1,6 +1,6 @@
 {
   "name": "@diogoabu/adminjs",
-  "version": "6.8.7-14",
+  "version": "6.8.7-15",
   "description": "Admin panel for apps written in node.js",
   "main": "index.js",
   "types": "index.d.ts",
