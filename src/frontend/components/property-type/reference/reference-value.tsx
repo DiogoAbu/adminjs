@@ -18,6 +18,7 @@ const ReferenceValue: React.FC<Props> = (props) => {
 
   useEffect(() => {
     if (!record.params[property.path] || !property.custom.propertyOnLocalizedEntity) {
+      console.error('No localized property found', property.path, property.custom.propertyOnLocalizedEntity)
       return
     }
 

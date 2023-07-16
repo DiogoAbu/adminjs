@@ -84,6 +84,8 @@ const Filter: React.FC<FilterPropertyProps> = (props) => {
           if (found) {
             label = found.params.value
           }
+        } else {
+          console.error('No localized property found', property.path, property.custom.propertyOnLocalizedEntity)
         }
       } catch (err) {
         console.error('Reference value on filter could not get localized value', err)

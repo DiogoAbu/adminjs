@@ -141,7 +141,7 @@ const Edit: FC<CombinedProps> = (props) => {
             label = found.params.value
           }
         } else {
-          console.error('No localized property found', custom.propertyOnLocalizedEntity)
+          console.error('No localized property found', property.path, custom.propertyOnLocalizedEntity)
         }
       } catch (err) {
         console.error('Reference value on edit action could not get localized value', err)
