@@ -137,7 +137,7 @@ const Edit: FC<CombinedProps> = (props) => {
           const found = data.find((e) => e.params.locale === i18n.language && !!e.params.value)
             ?? data.find((e) => !!e.params.value)
             ?? data[0]
-          if (found) {
+          if (found?.params?.value) {
             label = found.params.value
           }
         } else {
