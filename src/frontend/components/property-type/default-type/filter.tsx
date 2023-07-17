@@ -23,14 +23,22 @@ const Filter: React.FC<FilterPropertyProps> = (props) => {
   const renderInput = () => {
     const filterKey = `filter-${property.path}`
     const value = filter[property.path] || ''
+
     if (property.availableValues) {
       const selected = property.availableValues.find((av) => av.value === value)
+      if (selected) {
+        selected.label = selected.label
+          ? translateLabel(selected.label, resource.id, { defaultValue: selected.label })
+          : translateProperty(`${property.path}.${selected.value}`, resource.id, { defaultValue: selected.value })
+      }
+
       const options = property.availableValues.map((option) => ({
         ...option,
         label: option.label
           ? translateLabel(option.label, resource.id, { defaultValue: option.label })
           : translateProperty(`${property.path}.${option.value}`, resource.id, { defaultValue: option.value }),
       }))
+
       return (
         <Select
           variant="filter"

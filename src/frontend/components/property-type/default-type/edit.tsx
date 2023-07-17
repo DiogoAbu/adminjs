@@ -53,7 +53,14 @@ const SelectEdit: FC<CombinedProps> = (props) => {
     return null
   }
   const propValue = record.params?.[property.path] ?? ''
+
   const selected = property.availableValues.find((av) => av.value === propValue)
+  if (selected) {
+    selected.label = selected.label
+      ? translateLabel(selected.label, resource.id, { defaultValue: selected.label })
+      : translateProperty(`${property.path}.${selected.value}`, resource.id, { defaultValue: selected.value })
+  }
+
   const options = property.availableValues.map((option) => ({
     ...option,
     label: option.label
